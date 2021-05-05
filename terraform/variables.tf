@@ -9,4 +9,4 @@ variable "sonar_install_file" {default = "jsonar-4.3.a.tar.gz"}
 variable "sonar_config_file" {default = "dcap_setup_file"} 
 variable "sonar_config_file_password" {default = ""} 
 variable "sonar_image_name" {default = "your-image-name-here"} 
-variable "security_group_ingress" {default = ["1.2.3.4","1.2.3.5"]}
+variable "security_group_ingress" {default = ["1.2.3.4/32","1.2.3.5/32"]}

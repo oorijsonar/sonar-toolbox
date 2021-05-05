@@ -12,11 +12,11 @@ This project provides the resources to deploy the Imperva Sonar solution using t
 1. Install [git](https://gist.github.com/derhuerst/1b15ff4652a867391f03) using brew on the system.<br/>
     `brew install git`
 1. Install [Terraform](https://www.terraform.io/) using brew on the system.<br/>
-    `brew install terraform` (v0.12.20)
+    `brew install terraform` (v0.15.1)
 1. Install [awscli](https://aws.amazon.com/cli/) using brew on the system.<br/>
     `brew install awscli`
 1. Download the latest by cloning this repo into the desired directory on the system. <br/>
-    `git clone git@github.com:imperva/mx-toolbox.git`
+    `git clone git@github.com:imperva/sonar-toolbox.git`
 
 ### **Step 2: Create S3 bucket and upload install package** 
 
@@ -35,7 +35,7 @@ This project provides the resources to deploy the Imperva Sonar solution using t
 
     ```
     {
-        "Version": "2021-01-01",
+        "Version": "2012-10-17",
         "Id": "your_bucket_policy",
         "Statement": [
             {
@@ -114,7 +114,7 @@ Refer to [Managing AWS Regions](https://docs.aws.amazon.com/general/latest/gr/ra
 ### Deployment:  
 
 In a terminal window, change directories into the the terraform folder.  
-    - `cd your/path/to/sonar-toolbox/terraforn`  
+    - `cd your/path/to/sonar-toolbox/terraform`  
 
 Next, run the following commands in this folder:  
     - `terraform init`   
@@ -123,7 +123,6 @@ Next, run the following commands in this folder:
 
   #### **Note:**  SSH to the instance, and monitor the progess of the install by tailing the following messages log:
   `tail -Fn 1000 /var/log/messages` 
-
 
 #### **Generate Setup File**   
 

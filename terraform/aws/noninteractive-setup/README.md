@@ -1,4 +1,4 @@
-# DSF AWS Deployment with Terraform
+# DSF AWS Deployment with Terraform - Noninteractive Setup
 
 This project provides resources and examples to deploy the Data Security Fabric (DSF) hub, agentless gateways, and RDS services using terrraform in AWS.  The terraform resources consist of the following:
 - Creating federation keys, generating passwords stored in secrets, and the required iam roles.

@@ -1,4 +1,4 @@
-# Sonar Terraform Deployment
+# DSF AWS Deployment with Terraform - Encrypted Config Setup
 
 This project provides the resources to deploy the Imperva Sonar solution using terrraform.  
 

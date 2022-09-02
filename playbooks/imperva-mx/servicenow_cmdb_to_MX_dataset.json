@@ -1,0 +1,58 @@
+[
+  {
+    "_id": "service_now_to_mx_dataset",
+    "name": "ServiceNow CMDB to MX Dataset",
+    "description": "",
+    "type": "playbook",
+    "category": "ServiceNow",
+    "version": 1,
+    "enabled": true,
+    "onlyWarehouse": false
+  },
+  {
+    "_id": "494990dc-8f65-4d45-b1f4-c81ae8a0d2cc",
+    "name": "Root",
+    "shortname": "root",
+    "type": "root_node",
+    "playbook": "service_now_to_mx_dataset",
+    "errorStatus": "fail",
+    "arguments": "{ \"service_now_tables\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"array\", \"default\" : [\"cmdb_ci_database\"] }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"service_now_limit\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"number\", \"description\" : \"Limit for how many tickets to retrieve\", \"default\" : 1000 }, \"required\" : false, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"service_now_asset_id\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\" }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"mx_dataset_name\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\", \"default\" : \"service_now_cmdb\" }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false } }",
+    "children": [
+      "e2b1d030-0371-41b9-8b6e-4e38f25858ed"
+    ]
+  },
+  {
+    "_id": "e2b1d030-0371-41b9-8b6e-4e38f25858ed",
+    "name": "ServiceNow CMDB Enrichment",
+    "shortname": "serviceNow_cmdb_enrichment",
+    "type": "reference_node",
+    "playbook": "service_now_to_mx_dataset",
+    "errorStatus": "fail",
+    "arguments": "{ \"root#tables\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"default\" : [\"cmdb_ci_database\"] }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_tables\\\"\" }, \"root#limit\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"number\", \"description\" : \"Limit for how many tickets to retrieve\", \"default\" : 1000 }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_limit\\\"\" }, \"root#service_now_asset_id\" : { \"inputType\" : \"bind\", \"schema\" : { }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_asset_id\\\"\" } }",
+    "children": [
+      "b733d92e-b5e2-4ea5-bde8-1a393ae87c1e"
+    ],
+    "reference": "service_now_cmdb_enrichment"
+  },
+  {
+    "_id": "b733d92e-b5e2-4ea5-bde8-1a393ae87c1e",
+    "name": "Send ServiceNow CMDB Data to MX",
+    "shortname": "serviceNow_cmdb_to_mx",
+    "type": "reference_node",
+    "playbook": "service_now_to_mx_dataset",
+    "errorStatus": "fail",
+    "arguments": "{ \"update_mx_dataset#dataSetName\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"default\" : \"service_now_cmdb\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.mx_dataset_name\\\"\" } }",
+    "children": [
+      "3f242774-b58f-42d5-b31a-eb4a7d38af24"
+    ],
+    "reference": "service_now_collection_to_mx"
+  },
+  {
+    "_id": "3f242774-b58f-42d5-b31a-eb4a7d38af24",
+    "name": "End",
+    "shortname": "end",
+    "type": "end_node",
+    "playbook": "service_now_to_mx_dataset",
+    "errorStatus": "fail"
+  }
+]

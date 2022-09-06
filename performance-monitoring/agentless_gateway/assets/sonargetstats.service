@@ -1,0 +1,9 @@
+[Unit]
+Description=asdf
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/sysconfig/jsonar
+ExecStart=/usr/bin/env ${JSONAR_BASEDIR}/bin/python3 ${JSONAR_BASEDIR}/bin/get_system_stats.py
+User=sonarw
+Group=sonar

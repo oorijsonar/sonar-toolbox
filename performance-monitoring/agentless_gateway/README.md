@@ -43,7 +43,7 @@ Download the latest files from the performance-monitoring/agentless_gateway fold
         >`watch -d "ls /opt/jsonar/data/sonargd/incoming/ | grep perf"`
     
     - In a separate terminal, SSH into the Agentless Gateway, and set up the script/scheduled job to collect and push perfomenace monitoring data to the local listener into the warehouse.
-        >`mv /tmp/get_system_stats.py /opt/jsonar/local/gateway/rsyslog.d/get_server_stats.py`  
+        >`mv /tmp/get_system_stats.py ${JSONAR_BASEDIR}/bin/get_server_stats.py`  
         >`mv /tmp/sonargetstats.service /etc/systemd/system/sonargetstats.service`  
         >`mv /tmp/sonargetstats.timer /etc/systemd/system/sonargetstats.timer`  
         >`systemctl enable sonargetstats.timer`  

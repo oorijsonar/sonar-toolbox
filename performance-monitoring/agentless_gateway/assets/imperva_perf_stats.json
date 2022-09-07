@@ -1,0 +1,200 @@
+[
+  {
+    "global_settings": {
+      "batch_settings": {
+        "max_batch_size": 268435456,
+        "max_batch_time_sec": 300,
+        "batch_enabled": true
+      },
+      "target_db": "sonargd",
+      "collect_unmatched_fields": true,
+      "redact_unmatched_fields": false,
+      "statistics": {
+        "vendor": "IMPERVA",
+        "service": "Performance"
+      },
+      "malformed_collection": {
+        "db_name": "sonargd",
+        "coll_name": "malformed_logs"
+      }
+    }
+  },
+  {
+    "global_field_translations": {
+      "Gateway Event Time": {
+        "generate": true,
+        "$expr": "$now"
+      },
+      "MX Name": {
+        "$expr": {
+          "$cond": [
+            {
+              "$ne": [
+                "$mx",
+                ""
+              ]
+            },
+            {
+              "$toUpper": "$mx"
+            },
+            ""  
+          ]
+        }
+      },
+      "Agent Gateway Name": {
+        "$expr": {
+          "$cond": [
+            {
+              "$ne": [
+                "$gw",
+                ""
+              ]
+            },
+            {
+              "$toUpper": "$gw"
+            },
+            ""
+          ]
+        }
+      },
+      "Server Group Name": {
+        "$expr": {
+          "$cond": [
+            {
+              "$ne": [
+                "$server_group",
+                ""
+              ]
+            },
+            {
+              "$toUpper": "$server_group"
+            },
+            ""
+          ]
+        }
+      },
+      "DB Agent Name": {
+        "$expr": {
+          "$cond": [
+            {
+              "$ne": [
+                "$agent_name",
+                 ""
+              ]
+            },
+            {
+              "$toUpper": "$agent_name"
+            },
+            ""
+          ]
+        }
+      },
+      "Agentless Gateway Name": {
+        "$expr": {
+          "$cond": [
+            {
+              "$ne": [
+                "agentless_gw_name",
+                 ""
+              ]
+            },
+            {
+              "$toUpper": "$agentless_gw_name"
+            },
+            ""
+          ]
+        }
+      },
+      "Host": {
+        "generate": true,
+        "$expr": "$fromhost"
+      },
+      "cpu.top.system.used_total": {
+        "generate": true,
+        "type": 1,
+        "$expr": {
+          "$add": [
+            "$cpu.top.system.hardware",
+            "$cpu.top.system.nice",
+            "$cpu.top.system.software",
+            "$cpu.top.system.steal_time",
+            "$cpu.top.system.system",
+            "$cpu.top.system.used",
+            "$cpu.top.system.user",
+            "$cpu.top.system.wait"
+          ]
+        }
+      },
+      "memory.mem.pct": {
+        "generate": true,
+        "type": 1,
+        "$expr": {
+          "$divide": [
+            "$memory.mem.used",
+            "$memory.mem.total"
+          ]
+        }
+      },
+      "memory.swap.pct": {
+        "generate": true,
+        "type": 1,
+        "$expr": {
+          "$divide": [
+             "$memory.swap.used",
+             "$memory.swap.total"
+          ]
+        }
+      },
+      "disk./.disk_pct": {
+        "generate": true,
+        "type": 1,
+        "$expr": {
+          "$divide": [
+            "$disk./.disk_used",
+            "$disk./.disk_capacity"
+          ]
+        }
+      },
+      "disk./boot.disk_pct": {
+        "generate": true,
+        "type": 1,
+        "$expr": {
+          "$divide": [
+            "$disk./boot.disk_used",
+            "$disk./boot.disk_capacity"
+          ]
+        }
+      },
+      "disk./var.disk_pct": {
+        "generate": true,
+        "type": 1,
+        "$expr": {
+          "$divide": [
+            "$disk./var.disk_used",
+            "$disk./var.disk_capacity"
+          ]
+        }
+      },
+      "disk./var/log/audit.disk_pct": {
+        "generate": true,
+        "type": 1,
+        "$expr": {
+          "$divide": [
+            "$disk./var/log/audit.disk_used",
+            "$disk./var/log/audit.disk_capacity"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "output_connection": {
+      "group_label": "imperva_perf_stats",
+      "unique_label": "imperva_perf_stats",
+      "default_collection": "imperva_perf_stats",
+      "event_format": {
+        "standard": "JSON"
+      }
+    }
+  }
+]

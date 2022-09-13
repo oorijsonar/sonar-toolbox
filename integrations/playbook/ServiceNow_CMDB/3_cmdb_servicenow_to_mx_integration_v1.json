@@ -1,6 +1,6 @@
 [
 {
-  "_id" : "fe9ed2dd-e385-469d-890f-3ee7c1080919",
+  "_id" : "36fc43d8-4116-4d17-a471-b438fc7b040d",
   "name" : "CMDB ServiceNow to MX integration",
   "description" : "",
   "type" : "playbook",
@@ -9,10 +9,10 @@
   "enabled" : true,
   "onlyWarehouse" : false,
   "created" : {
-    "$date" : "2022-09-13T02:52:45.21Z"
+    "$date" : "2022-09-13T21:37:33.492Z"
   },
   "playbook" : {
-    "_id" : "cmdb_servicenow_to_mx_integration",
+    "_id" : "d3eaa134-0876-427a-8bc8-1ac7c907962a",
     "name" : "CMDB ServiceNow to MX integration",
     "description" : "",
     "type" : "playbook",
@@ -21,7 +21,7 @@
     "enabled" : true,
     "onlyWarehouse" : false,
     "created" : {
-      "$date" : "2022-09-13T02:52:41.794Z"
+      "$date" : "2022-09-13T21:37:13.865Z"
     },
     "playbook" : {
       "_id" : "cmdb_servicenow_to_mx_integration",
@@ -36,42 +36,42 @@
   }
 },
 {
-  "_id" : "ed7c3563-4258-4bf7-845b-7633f780abcf",
+  "_id" : "a64b94ed-10bf-43e7-82e7-e6ccd7efb50b",
   "name" : "Root",
   "shortname" : "root",
   "type" : "root_node",
-  "playbook" : "fe9ed2dd-e385-469d-890f-3ee7c1080919",
+  "playbook" : "36fc43d8-4116-4d17-a471-b438fc7b040d",
   "errorStatus" : "fail",
   "arguments" : "{ \"service_now_tables\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"array\", \"default\" : [\"cmdb_ci_database\"] }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"service_now_limit\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"number\", \"description\" : \"Limit for how many tickets to retrieve\", \"default\" : 1000 }, \"required\" : false, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"service_now_asset_id\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\" }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"mx_dataset_name\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\", \"default\" : \"service_now_cmdb\" }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false } }",
-  "children" : ["738f4aaa-38ce-434d-beab-659237478e73"]
+  "children" : ["1722e9aa-c5cf-461a-8024-5d15f8de7a66"]
 },
 {
-  "_id" : "738f4aaa-38ce-434d-beab-659237478e73",
+  "_id" : "1722e9aa-c5cf-461a-8024-5d15f8de7a66",
   "name" : "Import ServiceNow CMDB data",
   "shortname" : "serviceNow_cmdb_enrichment",
   "type" : "reference_node",
-  "playbook" : "fe9ed2dd-e385-469d-890f-3ee7c1080919",
+  "playbook" : "36fc43d8-4116-4d17-a471-b438fc7b040d",
   "errorStatus" : "fail",
-  "arguments" : "{ \"root#tables\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"default\" : [\"cmdb_ci_database\"] }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_tables\\\"\" }, \"root#limit\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"number\", \"description\" : \"Limit for how many tickets to retrieve\", \"default\" : 1000 }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_limit\\\"\" }, \"root#service_now_asset_id\" : { \"inputType\" : \"bind\", \"schema\" : { }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_asset_id\\\"\" } }",
-  "children" : ["8bbd6cef-cb1d-48a8-8e6d-37196d98d4da"],
+  "arguments" : "{ \"root#tables\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"default\" : [\"cmdb_ci_database\"] }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_tables\\\"\" }, \"root#limit\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"number\", \"description\" : \"Limit for how many tickets to retrieve\", \"default\" : 1000 }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_limit\\\"\" } }",
+  "children" : ["d0491838-d050-4068-8b62-8281eda01292"],
   "reference" : "import_servicenow_cmdb_data"
 },
 {
-  "_id" : "8bbd6cef-cb1d-48a8-8e6d-37196d98d4da",
+  "_id" : "d0491838-d050-4068-8b62-8281eda01292",
   "name" : "Push CMDB data to MX",
   "shortname" : "serviceNow_cmdb_to_mx",
   "type" : "reference_node",
-  "playbook" : "fe9ed2dd-e385-469d-890f-3ee7c1080919",
+  "playbook" : "36fc43d8-4116-4d17-a471-b438fc7b040d",
   "errorStatus" : "fail",
   "arguments" : "{ \"update_mx_dataset#dataSetName\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"default\" : \"service_now_cmdb\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.mx_dataset_name\\\"\" } }",
-  "children" : ["1f36b14f-6300-43ad-8cd4-bcc129173de1"],
+  "children" : ["2681efa9-cdc9-4b1b-92e5-40b59bffc091"],
   "reference" : "push_cmdb_data_to_mx"
 },
 {
-  "_id" : "1f36b14f-6300-43ad-8cd4-bcc129173de1",
+  "_id" : "2681efa9-cdc9-4b1b-92e5-40b59bffc091",
   "name" : "End",
   "shortname" : "end",
   "type" : "end_node",
-  "playbook" : "fe9ed2dd-e385-469d-890f-3ee7c1080919",
+  "playbook" : "36fc43d8-4116-4d17-a471-b438fc7b040d",
   "errorStatus" : "fail"
 }]

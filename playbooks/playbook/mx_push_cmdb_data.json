@@ -1,7 +1,7 @@
 [
 {
   "_id" : "878f68d8-07e1-45a1-8e09-933cda447169",
-  "name" : "Send ServiceNow CMDB Data to MX",
+  "name" : "Push CMDB data to MX",
   "description" : "",
   "type" : "playbook",
   "category" : "ServiceNow",
@@ -12,8 +12,8 @@
     "$date" : "2022-09-13T02:19:37.983Z"
   },
   "playbook" : {
-    "_id" : "service_now_collection_to_mx",
-    "name" : "Send ServiceNow CMDB Data to MX",
+    "_id" : "mx_push_cmdb_data",
+    "name" : "Push CMDB data to MX",
     "description" : "",
     "type" : "playbook",
     "category" : "ServiceNow",
@@ -24,8 +24,8 @@
       "$date" : "2022-09-13T02:19:28.583Z"
     },
     "playbook" : {
-      "_id" : "service_now_collection_to_mx",
-      "name" : "Send ServiceNow CMDB Data to MX",
+      "_id" : "mx_push_cmdb_data",
+      "name" : "Push CMDB data to MX",
       "description" : "",
       "type" : "playbook",
       "category" : "ServiceNow",

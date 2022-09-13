@@ -1,7 +1,7 @@
 [
 {
   "_id" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
-  "name" : "ServiceNow CMDB Enrichment",
+  "name" : "Import ServiceNow CMDB data",
   "description" : "",
   "type" : "playbook",
   "category" : "ServiceNow",
@@ -12,8 +12,8 @@
     "$date" : "2022-09-13T01:14:31.069Z"
   },
   "playbook" : {
-    "_id" : "service_now_cmdb_enrichment",
-    "name" : "ServiceNow CMDB Enrichment",
+    "_id" : "servicenow_import_cmdb_data",
+    "name" : "Import ServiceNow CMDB data",
     "description" : "",
     "type" : "playbook",
     "category" : "ServiceNow",
@@ -24,8 +24,8 @@
       "$date" : "2022-09-13T01:14:26.402Z"
     },
     "playbook" : {
-      "_id" : "service_now_cmdb_enrichment",
-      "name" : "ServiceNow CMDB Enrichment",
+      "_id" : "servicenow_import_cmdb_data",
+      "name" : "Import ServiceNow CMDB data",
       "description" : "",
       "type" : "playbook",
       "category" : "ServiceNow",

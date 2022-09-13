@@ -12,7 +12,7 @@
     "$date" : "2022-09-13T01:14:31.069Z"
   },
   "playbook" : {
-    "_id" : "8377686d-5de6-4408-8e5c-dd00754d6143",
+    "_id" : "service_now_cmdb_enrichment",
     "name" : "ServiceNow CMDB Enrichment",
     "description" : "",
     "type" : "playbook",

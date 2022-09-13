@@ -28,7 +28,7 @@ Import playbooks
 https://<my sonar>/playbook_drafts.xhtml
 -> Click on Import Draft
 -> Select the playbook you want to import
--> Click on Publish
+-> Click on Publish - Replace for new Version - Confirm Publish
 ```
 
 Add connection

@@ -12,7 +12,7 @@
     "$date" : "2022-09-13T02:19:37.983Z"
   },
   "playbook" : {
-    "_id" : "600e3338-faa9-4f25-aa23-6f84cf222a32",
+    "_id" : "service_now_collection_to_mx",
     "name" : "Send ServiceNow CMDB Data to MX",
     "description" : "",
     "type" : "playbook",

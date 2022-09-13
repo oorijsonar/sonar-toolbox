@@ -12,7 +12,7 @@
     "$date" : "2022-09-13T21:37:33.492Z"
   },
   "playbook" : {
-    "_id" : "d3eaa134-0876-427a-8bc8-1ac7c907962a",
+    "_id" : "cmdb_servicenow_to_mx_integration",
     "name" : "CMDB ServiceNow to MX integration",
     "description" : "",
     "type" : "playbook",
@@ -63,7 +63,6 @@
   "type" : "reference_node",
   "playbook" : "36fc43d8-4116-4d17-a471-b438fc7b040d",
   "errorStatus" : "fail",
-  "arguments" : "{ \"update_mx_dataset#dataSetName\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"default\" : \"service_now_cmdb\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.mx_dataset_name\\\"\" } }",
   "children" : ["2681efa9-cdc9-4b1b-92e5-40b59bffc091"],
   "reference" : "push_cmdb_data_to_mx"
 },

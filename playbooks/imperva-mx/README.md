@@ -1,10 +1,28 @@
+Notes:
+Instead of links, navigation intructions like Home -> Sync Spreadsheet -> Import Assets (with screenshot)
+Make sure the template was removed from the version
+        Change the draft to add the asset_id of the connection you want to use add to LITERAL (add screenshot)
+
+Rename playbooks
+- Import ServiceNow CMDB data
+- Push CMDB data to MX
+- CMDB ServiceNow to MX integration
+
+Add troubleshooting section:
+Error Code: 401 ({"error":{"message":"User Not Authenticated","detail":"Required to provide Auth information"},"status":"failure"})
+The delegate thing that happens if you add on the wrong order
+
+```
+// TODO download zip and how to extract
+```
 
 Upload openapi to sonar
 ```
-scp ~/imperva-mx/mx.openapi.json ${JSONAR_LOCALDIR}/action-center-sources/mx.openapi.json
+// TODO full scp line with source and mkdir
+scp ~/imperva-mx/mx.openapi.json ${JSONAR_LOCALDIR}/action-center-sources/imperva-mx.openapi.json
 ```
 
-Connect to sonarw to add new openapi source
+Connect to sonarw to add new openapi source (URLs come from the connection created below)
 ```
 new_source =   {
     "_id": "imperva_mx",
@@ -12,7 +30,7 @@ new_source =   {
     "type": "OFFLINE",
     "disabled": false,
     "openapi": "file://${JSONAR_LOCALDIR}/action-center-sources/imperva-mx.openapi.json",
-    "url": "https://mx.dev.impervademo.com"
+    "url": "https://unused-placeholder.com"
   }
 use lmrm__ae
 db.action_center_sources.insert(new_source)
@@ -22,6 +40,11 @@ Synchronize actions
 ```
 https://<my sonar>/playbook_synchronization_history.xhtml
 ```
+
+Import playbooks by use case
+step 1 - load cmdb from servicnow
+step 2 - push from cmdb table to MX
+step 3 - tying them together
 
 Import playbooks
 ```
@@ -70,3 +93,4 @@ https://<my sonar>/playbooks.xhtml
 
 - Filename: `servicenow_collection_to_MX.json`
 - Playbook Id: `service_now_collection_to_mx`
+- Depends on: servicenow/servicenow_cmdb_enrichment.json

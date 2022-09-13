@@ -12,7 +12,7 @@ new_source =   {
     "type": "OFFLINE",
     "disabled": false,
     "openapi": "file://${JSONAR_LOCALDIR}/action-center-sources/servicenow.openapi.json",
-    "url": "http://localhost:8443"
+    "url": "http://unused-placeholder.com"
   }
 use lmrm__ae
 db.action_center_sources.insert(new_source)

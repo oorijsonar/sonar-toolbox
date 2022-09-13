@@ -1,90 +1,103 @@
 [
-  {
-    "_id": "service_now_collection_to_mx",
-    "name": "Send ServiceNow CMDB Data to MX",
-    "description": "",
-    "type": "playbook",
-    "category": "ServiceNow",
-    "version": 1,
-    "enabled": true,
-    "onlyWarehouse": false
+{
+  "_id" : "878f68d8-07e1-45a1-8e09-933cda447169",
+  "name" : "Send ServiceNow CMDB Data to MX",
+  "description" : "",
+  "type" : "playbook",
+  "category" : "ServiceNow",
+  "version" : 1,
+  "enabled" : true,
+  "onlyWarehouse" : false,
+  "created" : {
+    "$date" : "2022-09-13T02:19:37.983Z"
   },
-  {
-    "_id": "efe21f9d-8381-490f-a419-6e022b7a4062",
-    "name": "Root",
-    "shortname": "root",
-    "type": "root_node",
-    "playbook": "service_now_collection_to_mx",
-    "errorStatus": "fail",
-    "children": [
-      "e67577b6-ec36-4e36-9e4b-f2f7e44a12c1"
-    ]
-  },
-  {
-    "_id": "e67577b6-ec36-4e36-9e4b-f2f7e44a12c1",
-    "name": "Get Service Now Data",
-    "shortname": "get_service_now_data",
-    "type": "action_node",
-    "playbook": "service_now_collection_to_mx",
-    "errorStatus": "fail",
-    "arguments": "{ \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"aggregation_pipeline\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"query\" : { \"type\" : \"object\", \"description\" : \"A dictionary containing the filter to be used in the \\\"find()\\\" method.\" } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"asset_id\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset ID of the MongoDB server where the database and collection are located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarw\\\"\" }, \"database_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the database where the collection is located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"sonargd\\\"\" }, \"collection_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the collection where to perform the query or the aggregation.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"servicenow_cmdb_table_data\\\"\" }, \"aggregation_pipeline\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"[ { \\\"$project\\\" : { \\\"_id\\\" : 0, \\\"sys_id\\\" : 1, \\\"support_group\\\" : \\\"$support_group.display_value\\\", \\\"managed_by\\\" : \\\"$managed_by.display_value\\\", \\\"hostname\\\" : \\\"$fqdn\\\", \\\"supported_by\\\" : \\\"$supported_by.display_value\\\", \\\"name\\\" : 1, \\\"managed_by_group\\\" : \\\"$managed_by_group.display_value\\\", \\\"ip_address\\\" : 1, \\\"subcategory\\\" : 1, \\\"department\\\" : \\\"$department.display_value\\\", \\\"category\\\" : 1 } } ]\" } }",
-    "result": "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"batch_size\" : { \"type\" : \"string\", \"description\" : \"The number of documents returned.\" }, \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the execution was successful.\" }, \"results\" : { \"type\" : \"string\", \"description\" : \"A list containing the documents found.\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
-    "children": [
-      "1e40e068-8e01-4dec-abd1-fef1cd773c28"
-    ],
-    "action": "actions:sonaractions.mongodb_actions_execute_mongodb_query",
-    "asynchronous": false
-  },
-  {
-    "_id": "1e40e068-8e01-4dec-abd1-fef1cd773c28",
-    "name": "Get MX Connections",
-    "shortname": "get_mx_connections",
-    "type": "action_node",
-    "playbook": "service_now_collection_to_mx",
-    "errorStatus": "fail",
-    "arguments": "{ \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"aggregation_pipeline\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"query\" : { \"type\" : \"object\", \"description\" : \"A dictionary containing the filter to be used in the \\\"find()\\\" method.\" } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"asset_id\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset ID of the MongoDB server where the database and collection are located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarw\\\"\" }, \"database_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the database where the collection is located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarg\\\"\" }, \"collection_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the collection where to perform the query or the aggregation.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"connection\\\"\" }, \"aggregation_pipeline\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"[ { \\\"$match\\\" : { \\\"Service Name\\\" : \\\"MX\\\" } },{ \\\"$project\\\" : { \\\"*\\\" : 0, \\\"url\\\" : 1, \\\"asset_id\\\" : 1 } } ]\" } }",
-    "result": "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"batch_size\" : { \"type\" : \"string\", \"description\" : \"The number of documents returned.\" }, \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the execution was successful.\" }, \"results\" : { \"type\" : \"string\", \"description\" : \"A list containing the documents found.\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
-    "children": [
-      "b9129e35-3d3a-4778-8c4f-de27d0e55845"
-    ],
-    "action": "actions:sonaractions.mongodb_actions_execute_mongodb_query",
-    "asynchronous": false
-  },
-  {
-    "_id": "b9129e35-3d3a-4778-8c4f-de27d0e55845",
-    "name": "Loop over MX Connections",
-    "shortname": "loop_over_mx_connections",
-    "type": "loop_node",
-    "playbook": "service_now_collection_to_mx",
-    "errorStatus": "fail",
-    "arguments": "{ \"items\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\" }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$get_mx_connections.result.results\\\"\" } }",
-    "children": [
-      "9e3fbee5-df62-4d92-928f-ff04c6956983"
-    ],
-    "end": [
-      "ad40efea-cec2-4ffc-9cc3-9e278e3e77d4"
-    ]
-  },
-  {
-    "_id": "9e3fbee5-df62-4d92-928f-ff04c6956983",
-    "name": "Update MX Dataset",
-    "shortname": "update_mx_dataset",
-    "type": "action_node",
-    "playbook": "service_now_collection_to_mx",
-    "errorStatus": "warn",
-    "arguments": "{ \"url\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"{url}/SecureSphere/api - will be overwritten with asset_id connection 'url' field\", \"default\" : \"localhost\", \"extensions\" : { \"in\" : \"server\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"<from_asset>\\\"\" }, \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"records\" : { \"type\" : \"array\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { \"type\" : \"object\" } } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"dataSetName\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"SessionAuth\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset_id of the connection that matches type:OPENAPI and auth_mechanism:SessionAuth\", \"extensions\" : { \"in\" : \"header\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$loop_over_mx_connections.item.asset_id\\\"\" }, \"records\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { \"type\" : \"object\" } }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$get_service_now_data.result.results\\\"\" } }",
-    "children": [
-      "ad40efea-cec2-4ffc-9cc3-9e278e3e77d4"
-    ],
-    "action": "mx:updateDatasetRecords",
-    "asynchronous": false
-  },
-  {
-    "_id": "ad40efea-cec2-4ffc-9cc3-9e278e3e77d4",
-    "name": "End",
-    "shortname": "end",
-    "type": "end_node",
-    "playbook": "service_now_collection_to_mx",
-    "errorStatus": "fail"
+  "playbook" : {
+    "_id" : "600e3338-faa9-4f25-aa23-6f84cf222a32",
+    "name" : "Send ServiceNow CMDB Data to MX",
+    "description" : "",
+    "type" : "playbook",
+    "category" : "ServiceNow",
+    "version" : 1,
+    "enabled" : true,
+    "onlyWarehouse" : false,
+    "created" : {
+      "$date" : "2022-09-13T02:19:28.583Z"
+    },
+    "playbook" : {
+      "_id" : "service_now_collection_to_mx",
+      "name" : "Send ServiceNow CMDB Data to MX",
+      "description" : "",
+      "type" : "playbook",
+      "category" : "ServiceNow",
+      "version" : 1,
+      "enabled" : true,
+      "onlyWarehouse" : false
+    }
   }
-]
+},
+{
+  "_id" : "6a7a46c9-962e-414d-932e-68dccdd326e2",
+  "name" : "Root",
+  "shortname" : "root",
+  "type" : "root_node",
+  "playbook" : "878f68d8-07e1-45a1-8e09-933cda447169",
+  "errorStatus" : "fail",
+  "children" : ["2f92b2ab-e6f9-4015-9754-2bfe3905e789"]
+},
+{
+  "_id" : "2f92b2ab-e6f9-4015-9754-2bfe3905e789",
+  "name" : "Get Service Now Data",
+  "shortname" : "get_service_now_data",
+  "type" : "action_node",
+  "playbook" : "878f68d8-07e1-45a1-8e09-933cda447169",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"aggregation_pipeline\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"query\" : { \"type\" : \"object\", \"description\" : \"A dictionary containing the filter to be used in the \\\"find()\\\" method.\" } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"asset_id\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset ID of the MongoDB server where the database and collection are located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarw\\\"\" }, \"database_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the database where the collection is located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"sonargd\\\"\" }, \"collection_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the collection where to perform the query or the aggregation.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"servicenow_cmdb_table_data\\\"\" }, \"aggregation_pipeline\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"[ { \\\"$project\\\" : { \\\"_id\\\" : 0, \\\"sys_id\\\" : 1, \\\"support_group\\\" : \\\"$support_group.display_value\\\", \\\"managed_by\\\" : \\\"$managed_by.display_value\\\", \\\"hostname\\\" : \\\"$fqdn\\\", \\\"supported_by\\\" : \\\"$supported_by.display_value\\\", \\\"name\\\" : 1, \\\"managed_by_group\\\" : \\\"$managed_by_group.display_value\\\", \\\"ip_address\\\" : 1, \\\"subcategory\\\" : 1, \\\"department\\\" : \\\"$department.display_value\\\", \\\"category\\\" : 1 } } ]\" } }",
+  "result" : "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"batch_size\" : { \"type\" : \"string\", \"description\" : \"The number of documents returned.\" }, \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the execution was successful.\" }, \"results\" : { \"type\" : \"string\", \"description\" : \"A list containing the documents found.\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
+  "children" : ["7baa41c3-101d-4fef-acea-dc505a88e2fa"],
+  "action" : "actions:sonaractions.mongodb_actions_execute_mongodb_query",
+  "asynchronous" : false
+},
+{
+  "_id" : "7baa41c3-101d-4fef-acea-dc505a88e2fa",
+  "name" : "Get MX Connections",
+  "shortname" : "get_mx_connections",
+  "type" : "action_node",
+  "playbook" : "878f68d8-07e1-45a1-8e09-933cda447169",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"aggregation_pipeline\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"query\" : { \"type\" : \"object\", \"description\" : \"A dictionary containing the filter to be used in the \\\"find()\\\" method.\" } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"asset_id\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset ID of the MongoDB server where the database and collection are located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarw\\\"\" }, \"database_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the database where the collection is located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarg\\\"\" }, \"collection_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the collection where to perform the query or the aggregation.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"connection\\\"\" }, \"aggregation_pipeline\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"[ { \\\"$match\\\" : { \\\"Service Name\\\" : \\\"MX\\\" } },{ \\\"$project\\\" : { \\\"*\\\" : 0, \\\"url\\\" : 1, \\\"asset_id\\\" : 1 } } ]\" } }",
+  "result" : "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"batch_size\" : { \"type\" : \"string\", \"description\" : \"The number of documents returned.\" }, \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the execution was successful.\" }, \"results\" : { \"type\" : \"string\", \"description\" : \"A list containing the documents found.\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
+  "children" : ["bf578aea-e23b-44b7-922b-6c18dabc998b"],
+  "action" : "actions:sonaractions.mongodb_actions_execute_mongodb_query",
+  "asynchronous" : false
+},
+{
+  "_id" : "bf578aea-e23b-44b7-922b-6c18dabc998b",
+  "name" : "Loop over MX Connections",
+  "shortname" : "loop_over_mx_connections",
+  "type" : "loop_node",
+  "playbook" : "878f68d8-07e1-45a1-8e09-933cda447169",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"items\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\" }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$get_mx_connections.result.results\\\"\" } }",
+  "children" : ["686b1205-e8f0-4c06-a8b8-125ba40416a2"],
+  "end" : ["ddc5f000-3f1b-4445-acd1-c54b8cee2bf2"]
+},
+{
+  "_id" : "686b1205-e8f0-4c06-a8b8-125ba40416a2",
+  "name" : "Update MX Dataset",
+  "shortname" : "update_mx_dataset",
+  "type" : "action_node",
+  "playbook" : "878f68d8-07e1-45a1-8e09-933cda447169",
+  "errorStatus" : "warn",
+  "arguments" : "{ \"url\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"{url}/SecureSphere/api - will be overwritten with asset_id connection 'url' field\", \"default\" : \"localhost\", \"extensions\" : { \"in\" : \"server\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"<from_asset>\\\"\" }, \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"records\" : { \"type\" : \"array\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { \"type\" : \"object\" } } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"dataSetName\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"SessionAuth\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset_id of the connection that matches type:OPENAPI and auth_mechanism:SessionAuth\", \"extensions\" : { \"in\" : \"header\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$loop_over_mx_connections.item.asset_id\\\"\" }, \"records\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { \"type\" : \"object\" } }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$get_service_now_data.result.results\\\"\" } }",
+  "children" : ["ddc5f000-3f1b-4445-acd1-c54b8cee2bf2"],
+  "action" : "mx:updateDatasetRecords",
+  "asynchronous" : false
+},
+{
+  "_id" : "ddc5f000-3f1b-4445-acd1-c54b8cee2bf2",
+  "name" : "End",
+  "shortname" : "end",
+  "type" : "end_node",
+  "playbook" : "878f68d8-07e1-45a1-8e09-933cda447169",
+  "errorStatus" : "fail"
+}]

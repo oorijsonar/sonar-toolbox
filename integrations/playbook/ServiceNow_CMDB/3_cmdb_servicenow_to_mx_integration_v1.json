@@ -12,7 +12,7 @@
     "$date" : "2022-09-13T02:52:45.21Z"
   },
   "playbook" : {
-    "_id" : "cmdb_data_servicenow_to_mx",
+    "_id" : "cmdb_servicenow_to_mx_integration",
     "name" : "CMDB ServiceNow to MX integration",
     "description" : "",
     "type" : "playbook",
@@ -24,7 +24,7 @@
       "$date" : "2022-09-13T02:52:41.794Z"
     },
     "playbook" : {
-      "_id" : "cmdb_data_servicenow_to_mx",
+      "_id" : "cmdb_servicenow_to_mx_integration",
       "name" : "CMDB ServiceNow to MX integration",
       "description" : "",
       "type" : "playbook",
@@ -54,7 +54,7 @@
   "errorStatus" : "fail",
   "arguments" : "{ \"root#tables\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"default\" : [\"cmdb_ci_database\"] }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_tables\\\"\" }, \"root#limit\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"number\", \"description\" : \"Limit for how many tickets to retrieve\", \"default\" : 1000 }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_limit\\\"\" }, \"root#service_now_asset_id\" : { \"inputType\" : \"bind\", \"schema\" : { }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_asset_id\\\"\" } }",
   "children" : ["8bbd6cef-cb1d-48a8-8e6d-37196d98d4da"],
-  "reference" : "servicenow_import_cmdb_data"
+  "reference" : "import_servicenow_cmdb_data"
 },
 {
   "_id" : "8bbd6cef-cb1d-48a8-8e6d-37196d98d4da",
@@ -65,7 +65,7 @@
   "errorStatus" : "fail",
   "arguments" : "{ \"update_mx_dataset#dataSetName\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"default\" : \"service_now_cmdb\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.mx_dataset_name\\\"\" } }",
   "children" : ["1f36b14f-6300-43ad-8cd4-bcc129173de1"],
-  "reference" : "mx_push_cmdb_data"
+  "reference" : "push_cmdb_data_to_mx"
 },
 {
   "_id" : "1f36b14f-6300-43ad-8cd4-bcc129173de1",

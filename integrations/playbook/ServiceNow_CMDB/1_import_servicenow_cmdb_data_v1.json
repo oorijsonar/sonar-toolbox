@@ -12,7 +12,7 @@
     "$date" : "2022-09-13T01:14:31.069Z"
   },
   "playbook" : {
-    "_id" : "servicenow_import_cmdb_data",
+    "_id" : "import_servicenow_cmdb_data",
     "name" : "Import ServiceNow CMDB data",
     "description" : "",
     "type" : "playbook",
@@ -24,7 +24,7 @@
       "$date" : "2022-09-13T01:14:26.402Z"
     },
     "playbook" : {
-      "_id" : "servicenow_import_cmdb_data",
+      "_id" : "import_servicenow_cmdb_data",
       "name" : "Import ServiceNow CMDB data",
       "description" : "",
       "type" : "playbook",

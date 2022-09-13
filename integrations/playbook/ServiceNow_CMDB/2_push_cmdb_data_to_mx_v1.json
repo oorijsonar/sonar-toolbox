@@ -12,7 +12,7 @@
     "$date" : "2022-09-13T02:19:37.983Z"
   },
   "playbook" : {
-    "_id" : "mx_push_cmdb_data",
+    "_id" : "push_cmdb_data_to_mx",
     "name" : "Push CMDB data to MX",
     "description" : "",
     "type" : "playbook",
@@ -24,7 +24,7 @@
       "$date" : "2022-09-13T02:19:28.583Z"
     },
     "playbook" : {
-      "_id" : "mx_push_cmdb_data",
+      "_id" : "push_cmdb_data_to_mx",
       "name" : "Push CMDB data to MX",
       "description" : "",
       "type" : "playbook",

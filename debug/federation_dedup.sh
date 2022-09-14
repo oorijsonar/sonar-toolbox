@@ -18,7 +18,7 @@ function sonarw_run() {
 
 USAGE_1="<report folder name> [asset|connection] next"
 USAGE_2="<report folder name> [asset|connection] skip <asset id>"
-USAGE_3="<report folder name> [asset|connection] dedup <asset id> <index to use>"
+USAGE_3="<report folder name> [asset|connection] dedup <asset id> <index head> <index body>"
 USAGE_4="<report folder name> [asset|connection] revert <asset id>"
 if [ ! $# -gt 2 ]; then
   echo "Usage: $0 $USAGE_1"
@@ -47,7 +47,8 @@ fi
 coll_dedup="$2_2_dedup"
 coll_final="$2_3_final"
 asset_id="$4"
-index="$5"
+index_head="$5"
+index_body="$6"
 
 if [ "$3" = "skip" ]; then
 
@@ -60,7 +61,7 @@ elif [ "$3" = "next" ]; then
 elif [ "$3" = "dedup" ]; then
 
   sonarw_run "$report_db" "db.$coll_dedup.update({_id:\"$asset_id\"},{\$set:{fixed:true}})"
-  pick_agg="{\$match:{_id:\"$asset_id\"}},{\$project:{\"*\":1,pick:{\$mergeObjects:[{\$arrayElemAt:[\"\$head_to_compare_set\",$index]},{\$arrayElemAt:[\"\$body_to_compare_set\",$index]}]}}},{\$out:{name:\"$coll_final\",append:true}}"
+  pick_agg="{\$match:{_id:\"$asset_id\"}},{\$project:{\"*\":1,pick:{\$mergeObjects:[{\$arrayElemAt:[\"\$head_to_compare_set\",$index_head]},{\$arrayElemAt:[\"\$body_to_compare_set\",$index_body]}]}}},{\$out:{name:\"$coll_final\",append:true}}"
   sonarw_run "$report_db" "db.$coll_dedup.aggregate($pick_agg)"
   sonarw_run "$report_db" "db.$coll_final.find({_id:\"$asset_id\"}).pretty()"
 

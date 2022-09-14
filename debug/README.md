@@ -37,7 +37,7 @@ To fix the conflicts you can use the `federation_dedup.sh` script
 ```
 Usage: ./federation_dedup.sh <report folder name> [asset|connection] next
        ./federation_dedup.sh <report folder name> [asset|connection] skip <asset id>
-       ./federation_dedup.sh <report folder name> [asset|connection] dedup <asset id> <index to use>
+       ./federation_dedup.sh <report folder name> [asset|connection] dedup <asset id> <index head> <index body>
        ./federation_dedup.sh <report folder name> [asset|connection] revert <asset id>
 ```
 

@@ -52,7 +52,7 @@ index_body="$6"
 
 if [ "$3" = "skip" ]; then
 
-  sonarw_run "$report_db" "db.$coll_dedup.update({_id:\"$asset_id\"},{\$currentDate:{skip:true}})"
+  sonarw_run "$report_db" "db.$coll_dedup.update({_id:\"$asset_id\",fixed:{\$exists:false}},{\$currentDate:{skip:true}})"
 
 elif [ "$3" = "next" ]; then
 

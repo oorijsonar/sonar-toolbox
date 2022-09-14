@@ -55,7 +55,7 @@ $ ${JSONAR_BASEDIR}/bin/mongo --port 27117 --authenticationMechanism PLAIN --aut
 ```
 
 Add new source to sonarw:
-note: this is a list of all available openapi sources, you can pick and choose in case you don't want to add them all. Refer to `Depends on` section in [Usage] -> the playbook you intend to use.
+note: this is a list of all available openapi sources, you can pick and choose in case you don't want to add them all. Refer to `Depends on` section in [Usage](#usage) -> the playbook you intend to use.
 ```
 > var new_sources = []
 > new_sources.push({
@@ -87,6 +87,10 @@ https://<warehouse>/playbook_synchronization_history.xhtml
 
 ## Usage
 
+### Adding a connection
+
+// TODO how to add a connection
+
 ### Importing a playbook
 
 // TODO how to import playbook with screenshots
@@ -103,6 +107,10 @@ Filename: [1_import_servicenow_cmdb_data.json](ServiceNow_CMDB/1_import_servicen
 
 Playbook Id: `import_servicenow_cmdb_data`
 
+Depends on:
+- ServiceNow openapi source - [servicenow.openapi.json](openapi/servicenow.openapi.json)
+- ServiceNow connection - [ServiceNow_template.xlsx](template/ServiceNow_template.xlsx)
+
 #### 2 - Push CMDB data to MX
 
 // TODO description + images
@@ -110,6 +118,10 @@ Playbook Id: `import_servicenow_cmdb_data`
 Filename: [2_push_cmdb_data_to_mx.json](ServiceNow_CMDB/2_push_cmdb_data_to_mx.json)
 
 Playbook Id: `push_cmdb_data_to_mx`
+
+Depends on:
+- Imperva MX openapi source [imperva-mx.openapi.json](openapi/imperva-mx.openapi.json)
+- Imperva MX connection [ImpervaMX_template.xlsx](#template/ImpervaMX_template.xlsx)
 
 #### 3 - CMDB ServiceNow to MX integration
 

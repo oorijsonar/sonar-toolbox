@@ -1,11 +1,11 @@
-# Playbooks
+# Integration Playbooks
 
 // TODO what are playbooks
 
 ## Version compatibility
 
 ```
-jsonar_4.9.openapi3
+jsonar_4.9.openapi4
 ```
 
 ## Installation
@@ -35,7 +35,7 @@ The suggested location for the openapi files are in `${JSONAR_LOCALDIR}/openapi-
 
 Copy files to the warehouse
 ```
-scp -r openapi <warehouse>:${JSONAR_LOCALDIR}/openapi-sources
+$ scp -r openapi <warehouse>:${JSONAR_LOCALDIR}/openapi-sources
 ```
 
 Move the uploaded file to the suggested location:
@@ -48,7 +48,7 @@ $ mv ~ec2-user/openapi-sources .
 $ chown -R sonarw:sonar openapi-sources
 ```
 
-Connect to sonarw the warehouse shell:
+Connect to sonarw in the warehouse shell:
 ```
 $ CERT_AS_PASSWD=$(awk -vORS="\\\n" "1" ${JSONAR_LOCALDIR}/ssl/client/admin/cert.pem)
 $ ${JSONAR_BASEDIR}/bin/mongo --port 27117 --authenticationMechanism PLAIN --authenticationDatabase "\$external" -u"CN=admin" -p"${CERT_AS_PASSWD}"
@@ -99,26 +99,29 @@ https://<warehouse>/playbook_synchronization_history.xhtml
 
 // TODO description + images
 
-Filename: [1_import_servicenow_cmdb_data_v1.json](ServiceNow_CMDB/1_import_servicenow_cmdb_data_v1.json)
+Filename: [1_import_servicenow_cmdb_data.json](ServiceNow_CMDB/1_import_servicenow_cmdb_data.json)
+
 Playbook Id: `import_servicenow_cmdb_data`
 
 #### 2 - Push CMDB data to MX
 
 // TODO description + images
 
-Filename: [2_push_cmdb_data_to_mx_v1.json](ServiceNow_CMDB/2_push_cmdb_data_to_mx_v1.json)
+Filename: [2_push_cmdb_data_to_mx.json](ServiceNow_CMDB/2_push_cmdb_data_to_mx.json)
+
 Playbook Id: `push_cmdb_data_to_mx`
 
 #### 3 - CMDB ServiceNow to MX integration
 
 // TODO description + images
 
-Filename: [3_cmdb_servicenow_to_mx_integration_v1.json](ServiceNow_CMDB/3_cmdb_servicenow_to_mx_integration_v1.json)
+Filename: [3_cmdb_servicenow_to_mx_integration.json](ServiceNow_CMDB/3_cmdb_servicenow_to_mx_integration.json)
+
 Playbook Id: `cmdb_servicenow_to_mx_integration
 
 Depends on:
-- [Import ServiceNow CMDB data](#import_servicenow_cmdb_data)
-- [Push CMDB data to MX](#push_cmdb_data_to_mx)
+- [Import ServiceNow CMDB data](#1---import_servicenow_cmdb_data)
+- [Push CMDB data to MX](#2---push_cmdb_data_to_mx)
 
 ## FAQ
 

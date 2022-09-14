@@ -105,7 +105,7 @@ https://<warehouse>/playbook_synchronization_history.xhtml
 
 // TODO description + images
 
-Filename: [1_import_servicenow_cmdb_data.json](playbooks/ServiceNow_CMDB/1_import_servicenow_cmdb_data.json)
+Filename: [1_import_servicenow_cmdb_data.json](playbook/ServiceNow_CMDB/1_import_servicenow_cmdb_data.json)
 
 Playbook Id: `import_servicenow_cmdb_data`
 
@@ -117,7 +117,7 @@ Depends on:
 
 // TODO description + images
 
-Filename: [2_push_cmdb_data_to_mx.json](playbooks/ServiceNow_CMDB/2_push_cmdb_data_to_mx.json)
+Filename: [2_push_cmdb_data_to_mx.json](playbook/ServiceNow_CMDB/2_push_cmdb_data_to_mx.json)
 
 Playbook Id: `push_cmdb_data_to_mx`
 
@@ -129,7 +129,7 @@ Depends on:
 
 // TODO description + images
 
-Filename: [3_cmdb_servicenow_to_mx_integration.json](playbooks/ServiceNow_CMDB/3_cmdb_servicenow_to_mx_integration.json)
+Filename: [3_cmdb_servicenow_to_mx_integration.json](playbook/ServiceNow_CMDB/3_cmdb_servicenow_to_mx_integration.json)
 
 Playbook Id: `cmdb_servicenow_to_mx_integration
 

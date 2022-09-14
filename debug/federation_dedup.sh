@@ -19,10 +19,12 @@ function sonarw_run() {
 USAGE_1="<report folder name> [asset|connection] next"
 USAGE_2="<report folder name> [asset|connection] skip <asset id>"
 USAGE_3="<report folder name> [asset|connection] dedup <asset id> <index to use>"
+USAGE_4="<report folder name> [asset|connection] revert <asset id>"
 if [ ! $# -gt 2 ]; then
   echo "Usage: $0 $USAGE_1"
   echo "       $0 $USAGE_2"
   echo "       $0 $USAGE_3"
+  echo "       $0 $USAGE_4"
   exit 255
 fi
 
@@ -38,6 +40,7 @@ if [ ! -d "$1" ]; then
   echo "Usage: $0 $USAGE_1"
   echo "       $0 $USAGE_2"
   echo "       $0 $USAGE_3"
+  echo "       $0 $USAGE_4"
   exit 255
 fi
 
@@ -70,6 +73,7 @@ else
   echo "Usage: $0 $USAGE_1"
   echo "       $0 $USAGE_2"
   echo "       $0 $USAGE_3"
+  echo "       $0 $USAGE_4"
   exit 255
 fi
 

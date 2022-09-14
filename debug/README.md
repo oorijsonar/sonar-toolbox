@@ -2,13 +2,13 @@
 
 ## Federation Report
 
-Copy `federation_report.sh` to `$JSONAR_LOCALDIR/../debug/federation_report.sh` and change file permissions
+Copy `federation_report.sh` and `federation_dedup.sh` to `$JSONAR_LOCALDIR/../debug/federation_report.sh` and change file permissions
 ```
 $ . /etc/sysconfig/jsonar
 $ mkdir $JSONAR_LOCALDIR/../debug
-$ mv /tmp/federation_report.sh $JSONAR_LOCALDIR/../debug/
+$ mv /tmp/federation_*.sh $JSONAR_LOCALDIR/../debug/
 $ chown -R sonarw:sonar $JSONAR_LOCALDIR/../debug
-$ chmod 744 $JSONAR_LOCALDIR/../debug/federation_report.sh
+$ chmod 744 $JSONAR_LOCALDIR/../debug/federation_*.sh
 ```
 
 To execute the report run:
@@ -19,6 +19,12 @@ $ cd $JSONAR_LOCALDIR/../debug
 $ ./federation_report.sh
 ```
 
+To rerun the report on top of a previouly created report folder with data
+```
+Usage: ./federation_report.sh
+       ./federation_report.sh <report folder name> [--reimport]
+```
+
 # What to do with the results?
 
 To recreate the asset and collection collections find any document on `<coll>_2_dedup` with field `pick:conflict` and replace it with the correct document. To find the conflicts run:
@@ -27,10 +33,12 @@ To recreate the asset and collection collections find any document on `<coll>_2_
 > db.<coll>_2_dedup.find({"pick":"conflict"})
 ```
 
-To fix conflicts run:
+To fix the conflicts you can use the `federation_dedup.sh` script
 ```
-> use federation_report_<timestamp>
-> db.<coll>_2_dedup.aggregate({"$match":{"_id":"<_id>"}},{"$project":{"*":1,"pick":{"$arrayElemAt":["$set",<array index>]}}},{"$out":{"name":"<coll>_3_final","append":true}})
+Usage: ./federation_dedup.sh <report folder name> [asset|connection] next
+       ./federation_dedup.sh <report folder name> [asset|connection] skip <asset id>
+       ./federation_dedup.sh <report folder name> [asset|connection] dedup <asset id> <index to use>
+       ./federation_dedup.sh <report folder name> [asset|connection] revert <asset id>
 ```
 
 After fixing all the conflicts run this to recreate the collection:

@@ -95,6 +95,8 @@ https://<warehouse>/playbook_synchronization_history.xhtml
 
 // TODO how to import playbook with screenshots
 
+## Playbooks
+
 ### ServiceNow CMDB
 
 // TODO explain use case and playbooks, add screenshots

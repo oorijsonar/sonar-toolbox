@@ -1,44 +1,16 @@
 Notes:
 Instead of links, navigation intructions like Home -> Sync Spreadsheet -> Import Assets (with screenshot)
 Make sure the template was removed from the version
-        Change the draft to add the asset_id of the connection you want to use add to LITERAL (add screenshot)
-
-Rename playbooks
-- Import ServiceNow CMDB data
-- Push CMDB data to MX
-- CMDB ServiceNow to MX integration
+intruction servicenow pull - Change the draft to add the asset_id of the connection you want to use add to LITERAL (add screenshot)
 
 Add troubleshooting section:
 Error Code: 401 ({"error":{"message":"User Not Authenticated","detail":"Required to provide Auth information"},"status":"failure"})
 The delegate thing that happens if you add on the wrong order
-
+How to purge playbooks that are not loading (delegate error)
 ```
-// TODO download zip and how to extract
-```
-
-Upload openapi to sonar
-```
-// TODO full scp line with source and mkdir
-scp ~/imperva-mx/mx.openapi.json ${JSONAR_LOCALDIR}/action-center-sources/imperva-mx.openapi.json
-```
-
-Connect to sonarw to add new openapi source (URLs come from the connection created below)
-```
-new_source =   {
-    "_id": "imperva_mx",
-    "name": "Imperva MX API",
-    "type": "OFFLINE",
-    "disabled": false,
-    "openapi": "file://${JSONAR_LOCALDIR}/action-center-sources/imperva-mx.openapi.json",
-    "url": "https://unused-placeholder.com"
-  }
-use lmrm__ae
-db.action_center_sources.insert(new_source)
-```
-
-Synchronize actions
-```
-https://<my sonar>/playbook_synchronization_history.xhtml
+to_remove = db.playbook_definitions.find({category : { $in : [ "ServiceNow", "ServiceNow CMDB" ] } },{_id:1}).toArray().map(item => item._id)
+db.playbook_definitions.remove({_id: { $in : to_remove }})
+db.playbook_definitions.remove({playbook: { $in : to_remove }})
 ```
 
 Import playbooks by use case

@@ -1,28 +1,4 @@
 
-Upload openapi to sonar
-```
-scp ~/servicenow/servicenow.openapi.json <my sonar>:${JSONAR_LOCALDIR}/action-center-sources/servicenow.openapi.json
-```
-
-Connect to sonarw to add new openapi source
-```
-new_source =   {
-    "_id": "servicenow",
-    "name": "ServiceNow API",
-    "type": "OFFLINE",
-    "disabled": false,
-    "openapi": "file://${JSONAR_LOCALDIR}/action-center-sources/servicenow.openapi.json",
-    "url": "http://unused-placeholder.com"
-  }
-use lmrm__ae
-db.action_center_sources.insert(new_source)
-```
-
-Synchronize actions
-```
-https://<my sonar>/playbook_synchronization_history.xhtml
-```
-
 Import playbooks
 ```
 https://<my sonar>/playbook_drafts.xhtml

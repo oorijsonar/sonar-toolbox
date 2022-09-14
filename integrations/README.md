@@ -2,13 +2,123 @@
 
 // TODO what are playbooks
 
-## OpenAPI sources
-
-// TODO what are OpenAPI sources (actions sources)
-
 ## Version compatibility
 
-Make sure the playbook you want to use is supprted by you installed sonar. You can do that by reading the README.md inside each OpenAPI source.
+```
+jsonar_4.9.openapi3
+```
+
+## Installation
+
+// TODO summarize the installation process
+
+### Download files
+
+Option 1
+```
+$ wget -O sonar-toolbox.zip https://github.com/imperva/sonar-toolbox/archive/refs/heads/master.zip
+$ unzip sonar-toolbox.zip
+$ cd sonar-toolbox-master/integrations/
+```
+
+Option 2
+```
+$ git clone https://github.com/imperva/sonar-toolbox.git
+$ cd sonar-toolbox/integrations/
+```
+
+### OpenAPI sources
+
+// TODO what are OpenAPI sources?
+
+The suggested location for the openapi files are in `${JSONAR_LOCALDIR}/openapi-sources`. 
+
+Copy files to the warehouse
+```
+scp -r openapi <warehouse>:${JSONAR_LOCALDIR}/openapi-sources
+```
+
+Move the uploaded file to the suggested location:
+```
+$ ssh ec2-user@<warehouse>
+$ sudo su
+$ . /etc/sysconfig/jsonar
+$ cd $JSONAR_LOCALDIR
+$ mv ~ec2-user/openapi-sources .
+$ chown -R sonarw:sonar openapi-sources
+```
+
+Connect to sonarw the warehouse shell:
+```
+$ CERT_AS_PASSWD=$(awk -vORS="\\\n" "1" ${JSONAR_LOCALDIR}/ssl/client/admin/cert.pem)
+$ ${JSONAR_BASEDIR}/bin/mongo --port 27117 --authenticationMechanism PLAIN --authenticationDatabase "\$external" -u"CN=admin" -p"${CERT_AS_PASSWD}"
+```
+
+Add new source to sonarw:
+note: this is a list of all available openapi sources, you can pick and choose in case you don't want to add them all. Refer to `Depends on` section in [Usage] -> the playbook you intend to use.
+```
+> var new_sources = []
+> new_sources.push({
+    "_id": "imperva_mx",
+    "name": "Imperva MX API",
+    "type": "OFFLINE",
+    "disabled": false,
+    "openapi": "file://${JSONAR_LOCALDIR}/openapi-sources/imperva-mx.openapi.json",
+    "url": "https://unused-placeholder.com"
+  })
+> new_sources.push({
+    "_id": "servicenow",
+    "name": "ServiceNow API",
+    "type": "OFFLINE",
+    "disabled": false,
+    "openapi": "file://${JSONAR_LOCALDIR}/openapi-sources/servicenow.openapi.json",
+    "url": "http://unused-placeholder.com"
+  })
+> use lmrm__ae
+> db.action_center_sources.insertMany(new_sources)
+```
+
+Synchronize actions
+```
+Warehouse Home Page -> Playbooks -> Synchronization History -> Synchronize Now
+OR
+https://<warehouse>/playbook_synchronization_history.xhtml
+```
+
+## Usage
+
+### Importing a playbook
+
+// TODO how to import playbook with screenshots
+
+### ServiceNow CMDB
+
+// TODO explain use case and playbooks, add screenshots
+
+#### 1 - Import ServiceNow CMDB data
+
+// TODO description + images
+
+Filename: [1_import_servicenow_cmdb_data_v1.json](ServiceNow_CMDB/1_import_servicenow_cmdb_data_v1.json)
+Playbook Id: `import_servicenow_cmdb_data`
+
+#### 2 - Push CMDB data to MX
+
+// TODO description + images
+
+Filename: [2_push_cmdb_data_to_mx_v1.json](ServiceNow_CMDB/2_push_cmdb_data_to_mx_v1.json)
+Playbook Id: `push_cmdb_data_to_mx`
+
+#### 3 - CMDB ServiceNow to MX integration
+
+// TODO description + images
+
+Filename: [3_cmdb_servicenow_to_mx_integration_v1.json](ServiceNow_CMDB/3_cmdb_servicenow_to_mx_integration_v1.json)
+Playbook Id: `cmdb_servicenow_to_mx_integration
+
+Depends on:
+- [Import ServiceNow CMDB data](#import_servicenow_cmdb_data)
+- [Push CMDB data to MX](#push_cmdb_data_to_mx)
 
 ## FAQ
 

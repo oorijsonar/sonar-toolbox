@@ -1,0 +1,173 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ServiceNow",
+        "version": "1.0.0",
+        "contact": {}
+    },
+    "servers": [
+        {
+            "url": "{url}/api/now",
+            "description": "",
+            "variables": {
+                "url": {
+                    "description": "{url}/api/now - will be overwritten with asset_id connection 'url' field",
+                    "default": "https://demo.servicenow.com"
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/table/{tableName}": {
+            "get": {
+                "summary": "Retrieves multiple records for the specified table.",
+                "description": "",
+                "externalDocs": {
+                    "url": "https://developer.servicenow.com/dev.do#!/reference/api/sandiego/rest/c_TableAPI"
+                },
+                "parameters": [
+                    {
+                        "name": "tableName",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Name of the table from which to retrieve the records."
+                    },
+                    {
+                        "name": "sysparm_display_value",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "false"
+                        },
+                        "description": "Determines the type of data returned, either the actual values from the database or the display values of the fields. Display values are manipulated based on the actual value in the database and user or system settings and preferences.\nIf returning display values, the value that is returned is dependent on the field type.\n- Choice fields: The database value may be a number, but the display value will be more descriptive.\n- Date fields: The database value is in UTC format, while the display value is based on the user's time zone.\n- Encrypted text: The database value is encrypted, while the displayed value is unencrypted based on the user's encryption context.\n- Reference fields: The database value is sys_id, but the display value is a display field of the referenced record.\n\nValid values:\n    true: Returns the display values for all fields.\n    false: Returns the actual values from the database.\n    all: Returns both actual and display values.\n\nNote: There is no preferred method for setting this parameter. However, specifying the display value may cause performance issues since it is not reading directly from the database and may include referencing other fields and records. For more information on display values and actual values, see Table API FAQs (KB0534905)."
+                    },
+                    {
+                        "name": "sysparm_exclude_reference_link",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "description": "Flag that indicates whether to exclude Table API links for reference fields.\n\nValid values:\n    true: Exclude Table API links for reference fields.\n    false: Include Table API links for reference fields.\n"
+                    },
+                    {
+                        "name": "sysparm_fields",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of fields to return in the response."
+                    },
+                    {
+                        "name": "sysparm_limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "default": 1000
+                        },
+                        "description": "Maximum number of records to return. For requests that exceed this number of records, use the sysparm_offset parameter to paginate record retrieval.\n\nThis limit is applied before ACL evaluation. If no records return, including records you have access to, rearrange the record order so records you have access to return first.\n\nNote: Unusually large sysparm_limit values can impact system performance."
+                    },
+                    {
+                        "name": "sysparm_query",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Encoded query used to filter the result set. You can use a UI filter to obtain a properly encoded query.\nSyntax: sysparm_query=.\n\n    : Name of the table column to filter against.\n    : Supports the following values:\n        =: Exactly matches .\n        !=: Does not match .\n        ^: Logically AND multiple query statements.\n        ^OR: Logically OR multiple query statements.\n        LIKE:  contains the specified string. Only works for  fields whose data type is string.\n        STARTSWITH:  starts with the specified string. Only works for  fields whose data type is string.\n        ENDSWITH:  ends with the specified string. Only works for  fields whose data type is string.\n    : Value to match against.\n\nAll parameters are case-sensitive. Queries can contain more than one entry, such as sysparm_query=[].\n\nFor example:\n\n(sysparm_query=caller_id=javascript:gs.getUserID()^active=true)\n\nEncoded queries also support order by functionality. To sort responses based on certain fields, use the ORDERBY and ORDERBYDESC clauses in sysparm_query.\nSyntax:\n\n    ORDERBY\n    ORDERBYDESC\n\nFor example: sysparm_query=active=true^ORDERBYnumber^ORDERBYDESCcategory\n\nThis query filters all active records and orders the results in ascending order by number, and then in descending order by category.\nIf part of the query is invalid, such as by specifying an invalid field name, the instance ignores the invalid part. It then returns rows using only the valid portion of the query. You can control this behavior using the property glide.invalid_query.returns_no_rows. Set this property to true to return no rows on an invalid query.\nNote: The glide.invalid_query.returns_no_rows property controls the behavior of all queries across the instance, such as in lists, scripts (GlideRecord.query()), and web service APIs."
+                    },
+                    {
+                        "name": "BasicAuth",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The asset_id of the connection that matches type:OPENAPI and auth_mechanism:basic"
+                    }
+                ],
+                "operationId": "get_table",
+                "responses": {
+                    "200": {
+                        "description": "Request completed successfully. If a valid query returned no results, the response body contains only an empty result array."
+                    }
+                },
+                "tags": [
+                    "ServiceNow",
+                    "Table"
+                ]
+            },
+            "post": {
+                "summary": "Create single record",
+                "description": "Create single record",
+                "externalDocs": {
+                    "url": "https://developer.servicenow.com/dev.do#!/reference/api/sandiego/rest/c_TableAPI#table-POST"
+                },
+                "parameters": [
+                    {
+                        "name": "tableName",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Name of the table from which to create a record."
+                    },
+                    {
+                        "name": "BasicAuth",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The asset_id of the connection that matches type:OPENAPI and auth_mechanism:basic"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ObjectDTO"
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "operationId": "create_record",
+                "responses": {
+                    "200": {
+                        "description": "Request completed successfully"
+                    }
+                },
+                "tags": [
+                    "ServiceNow",
+                    "Table"
+                ]
+            }
+        }
+    },
+    "components": {
+        "links": {},
+        "callbacks": {},
+        "schemas": {},
+        "securitySchemes": {
+            "BasicAuth": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        }
+    },
+    "tags": [],
+    "security": [
+        {
+            "BasicAuth": []
+        }
+    ]
+}

@@ -1,0 +1,116 @@
+[
+{
+  "_id" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
+  "name" : "Import ServiceNow CMDB data",
+  "description" : "",
+  "type" : "playbook",
+  "category" : "ServiceNow CMDB",
+  "version" : 1,
+  "enabled" : true,
+  "onlyWarehouse" : false,
+  "created" : {
+    "$date" : "2022-09-13T01:14:31.069Z"
+  },
+  "playbook" : {
+    "_id" : "import_servicenow_cmdb_data",
+    "name" : "Import ServiceNow CMDB data",
+    "description" : "",
+    "type" : "playbook",
+    "category" : "ServiceNow CMDB",
+    "version" : 1,
+    "enabled" : true,
+    "onlyWarehouse" : false,
+    "created" : {
+      "$date" : "2022-09-13T01:14:26.402Z"
+    },
+    "playbook" : {
+      "_id" : "import_servicenow_cmdb_data",
+      "name" : "Import ServiceNow CMDB data",
+      "description" : "",
+      "type" : "playbook",
+      "category" : "ServiceNow CMDB",
+      "version" : 1,
+      "enabled" : true,
+      "onlyWarehouse" : false
+    }
+  }
+},
+{
+  "_id" : "2e4ab7e4-c83b-4c90-a54f-c7c3aa06f6c7",
+  "name" : "Start",
+  "shortname" : "root",
+  "type" : "root_node",
+  "playbook" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"tables\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"array\", \"default\" : [\"cmdb_ci_database\"] }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"limit\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"number\", \"description\" : \"Limit for how many tickets to retrieve\", \"default\" : 1000 }, \"required\" : false, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"service_now_asset_id\" : { \"inputType\" : \"prompt\", \"schema\" : { }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false } }",
+  "children" : ["1b03bd87-24c9-4f48-93bc-90cff7b357da"]
+},
+{
+  "_id" : "1b03bd87-24c9-4f48-93bc-90cff7b357da",
+  "name" : "Drop servicenow_cmdb_table_data collection",
+  "shortname" : "drop_servicenow_cmdb_table_data_collection",
+  "type" : "action_node",
+  "playbook" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
+  "errorStatus" : "warn",
+  "arguments" : "{ \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"required\" : [\"commands\"], \"properties\" : { \"commands\" : { \"type\" : \"array\", \"description\" : \"The list of command documents to run must be formatted like {\\\"command\\\": <\\\"some command\\\">, value: <value>, database_name: <db_name>, \\\"additional_parameters\\\": {arg1: <value>, arg2: <value>} }\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"asset_id\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset ID of the MongoDB server.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarw\\\"\" }, \"commands\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"description\" : \"The list of command documents to run must be formatted like {\\\"command\\\": <\\\"some command\\\">, value: <value>, database_name: <db_name>, \\\"additional_parameters\\\": {arg1: <value>, arg2: <value>} }\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"[ { \\\"command\\\" : \\\"drop\\\", \\\"value\\\" : \\\"servicenow_cmdb_table_data\\\", \\\"database_name\\\" : \\\"sonargd\\\" } ]\" } }",
+  "result" : "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the update success and if any document was updated.\" }, \"output\" : { \"type\" : \"string\", \"description\" : \"A dictionary of commands and their output\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
+  "children" : ["4107d9e1-acd7-41ff-a2d0-f043fa76990c"],
+  "action" : "actions:sonaractions.mongodb_actions_run_mongodb_commands",
+  "asynchronous" : false
+},
+{
+  "_id" : "4107d9e1-acd7-41ff-a2d0-f043fa76990c",
+  "name" : "Loop over table names",
+  "shortname" : "loop",
+  "type" : "loop_node",
+  "playbook" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"items\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\" }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.tables\\\"\" } }",
+  "children" : ["9e301ed7-cb0d-49db-8648-430b26b98386"],
+  "end" : ["6d09fbab-442f-456a-ac17-962275164756"]
+},
+{
+  "_id" : "9e301ed7-cb0d-49db-8648-430b26b98386",
+  "name" : "Servicenow Query Table",
+  "shortname" : "query_table",
+  "type" : "action_node",
+  "playbook" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"url\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"{url}/api/now - will be overwritten with asset_id connection 'url' field\", \"default\" : \"https://demo.servicenow.com\", \"extensions\" : { \"in\" : \"server\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"<asset_url>\\\"\" }, \"tableName\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"description\" : \"Name of the table from which to retrieve the records.\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$loop.item\\\"\" }, \"sysparm_display_value\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"Determines the type of data returned, either the actual values from the database or the display values of the fields. Display values are manipulated based on the actual value in the database and user or system settings and preferences.\\nIf returning display values, the value that is returned is dependent on the field type.\\n- Choice fields: The database value may be a number, but the display value will be more descriptive.\\n- Date fields: The database value is in UTC format, while the display value is based on the user's time zone.\\n- Encrypted text: The database value is encrypted, while the displayed value is unencrypted based on the user's encryption context.\\n- Reference fields: The database value is sys_id, but the display value is a display field of the referenced record.\\n\\nValid values:\\n    true: Returns the display values for all fields.\\n    false: Returns the actual values from the database.\\n    all: Returns both actual and display values.\\n\\nNote: There is no preferred method for setting this parameter. However, specifying the display value may cause performance issues since it is not reading directly from the database and may include referencing other fields and records. For more information on display values and actual values, see Table API FAQs (KB0534905).\", \"default\" : \"false\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"\\\"true\\\"\" }, \"sysparm_fields\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"Comma-separated list of fields to return in the response.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"\\\"sys_id,subcategory,managed_by_group,managed_by,support_group,supported_by,name,department,ip_address,category,fqdn\\\"\" }, \"sysparm_limit\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"number\", \"description\" : \"Maximum number of records to return. For requests that exceed this number of records, use the sysparm_offset parameter to paginate record retrieval.\\n\\nThis limit is applied before ACL evaluation. If no records return, including records you have access to, rearrange the record order so records you have access to return first.\\n\\nNote: Unusually large sysparm_limit values can impact system performance.\", \"default\" : 1000, \"extensions\" : { \"in\" : \"query\" } }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.limit\\\"\" }, \"sysparm_query\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"Encoded query used to filter the result set. You can use a UI filter to obtain a properly encoded query.\\nSyntax: sysparm_query=.\\n\\n    : Name of the table column to filter against.\\n    : Supports the following values:\\n        =: Exactly matches .\\n        !=: Does not match .\\n        ^: Logically AND multiple query statements.\\n        ^OR: Logically OR multiple query statements.\\n        LIKE:  contains the specified string. Only works for  fields whose data type is string.\\n        STARTSWITH:  starts with the specified string. Only works for  fields whose data type is string.\\n        ENDSWITH:  ends with the specified string. Only works for  fields whose data type is string.\\n    : Value to match against.\\n\\nAll parameters are case-sensitive. Queries can contain more than one entry, such as sysparm_query=[].\\n\\nFor example:\\n\\n(sysparm_query=caller_id=javascript:gs.getUserID()^active=true)\\n\\nEncoded queries also support order by functionality. To sort responses based on certain fields, use the ORDERBY and ORDERBYDESC clauses in sysparm_query.\\nSyntax:\\n\\n    ORDERBY\\n    ORDERBYDESC\\n\\nFor example: sysparm_query=active=true^ORDERBYnumber^ORDERBYDESCcategory\\n\\nThis query filters all active records and orders the results in ascending order by number, and then in descending order by category.\\nIf part of the query is invalid, such as by specifying an invalid field name, the instance ignores the invalid part. It then returns rows using only the valid portion of the query. You can control this behavior using the property glide.invalid_query.returns_no_rows. Set this property to true to return no rows on an invalid query.\\nNote: The glide.invalid_query.returns_no_rows property controls the behavior of all queries across the instance, such as in lists, scripts (GlideRecord.query()), and web service APIs.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"\\\"nameLIKEISBT\\\"\" }, \"BasicAuth\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset_id of the connection that matches type:OPENAPI and auth_mechanism:basic\", \"extensions\" : { \"in\" : \"header\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.service_now_asset_id\\\"\" } }",
+  "result" : "{ \"schema\" : { }, \"sensitive\" : false, \"expression\" : \"\" }",
+  "children" : ["055c0859-4b0a-4925-8975-850760c87e2e"],
+  "action" : "servicenow:get_table",
+  "asynchronous" : false
+},
+{
+  "_id" : "055c0859-4b0a-4925-8975-850760c87e2e",
+  "name" : "Found results?",
+  "shortname" : "condition",
+  "type" : "conditional_node",
+  "playbook" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"expression\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"boolean\" }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : true, \"expression\" : \"{ \\\"$and\\\" : [{ \\\"$isArray\\\" : \\\"$query_table.result.result\\\" }, { \\\"$gt\\\" : [{ \\\"$size\\\" : \\\"$query_table.result.result\\\" }, 0] }] }\" } }",
+  "children" : ["6d09fbab-442f-456a-ac17-962275164756", "2e19f2dc-87d0-4c41-8038-2d9671bc6764"],
+  "end" : ["6d09fbab-442f-456a-ac17-962275164756"]
+},
+{
+  "_id" : "6d09fbab-442f-456a-ac17-962275164756",
+  "name" : "End",
+  "shortname" : "end",
+  "type" : "end_node",
+  "playbook" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
+  "errorStatus" : "fail"
+},
+{
+  "_id" : "2e19f2dc-87d0-4c41-8038-2d9671bc6764",
+  "name" : "Insert CMDB data into sonargd.servicenow_cmdb_table_data",
+  "shortname" : "insert_data",
+  "type" : "action_node",
+  "playbook" : "365e6a70-f7ca-4e80-a6ad-1e78e934ed15",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"required\" : [\"commands\"], \"properties\" : { \"commands\" : { \"type\" : \"array\", \"description\" : \"The list of command documents to run must be formatted like {\\\"command\\\": <\\\"some command\\\">, value: <value>, database_name: <db_name>, \\\"additional_parameters\\\": {arg1: <value>, arg2: <value>} }\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"asset_id\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset ID of the MongoDB server.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarw\\\"\" }, \"commands\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"description\" : \"The list of command documents to run must be formatted like {\\\"command\\\": <\\\"some command\\\">, value: <value>, database_name: <db_name>, \\\"additional_parameters\\\": {arg1: <value>, arg2: <value>} }\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"[ { \\\"command\\\" : \\\"insert\\\", \\\"value\\\" : \\\"servicenow_cmdb_table_data\\\", \\\"database_name\\\" : \\\"sonargd\\\", \\\"additional_parameters\\\" : { \\\"documents\\\" : \\\"$query_table.result.result\\\" } } ]\" }, \"reason\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"Specify which connection to use for the given asset\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"\\\"\\\"\" } }",
+  "result" : "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the update success and if any document was updated.\" }, \"output\" : { \"type\" : \"string\", \"description\" : \"A dictionary of commands and their output\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
+  "children" : ["6d09fbab-442f-456a-ac17-962275164756"],
+  "action" : "actions:sonaractions.mongodb_actions_run_mongodb_commands",
+  "asynchronous" : false
+}]

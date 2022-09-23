@@ -1,0 +1,104 @@
+[
+{
+  "_id" : "05c9e159-afe2-410c-a1f2-a7c16b3c6284",
+  "name" : "Push CMDB data to MX",
+  "description" : "",
+  "type" : "playbook",
+  "category" : "ServiceNow CMDB",
+  "version" : 1,
+  "enabled" : true,
+  "onlyWarehouse" : false,
+  "created" : {
+    "$date" : "2022-09-13T21:31:36.506Z"
+  },
+  "playbook" : {
+    "_id" : "push_cmdb_data_to_mx",
+    "name" : "Push CMDB data to MX",
+    "description" : "",
+    "type" : "playbook",
+    "category" : "ServiceNow CMDB",
+    "version" : 1,
+    "enabled" : true,
+    "onlyWarehouse" : false,
+    "created" : {
+      "$date" : "2022-09-13T02:19:37.983Z"
+    },
+    "playbook" : {
+      "_id" : "push_cmdb_data_to_mx",
+      "name" : "Push CMDB data to MX",
+      "description" : "",
+      "type" : "playbook",
+      "category" : "ServiceNow CMDB",
+      "version" : 1,
+      "enabled" : true,
+      "onlyWarehouse" : false
+    }
+  }
+},
+{
+  "_id" : "4c6901ec-d553-4f3f-8c4c-df06419c26e3",
+  "name" : "Root",
+  "shortname" : "root",
+  "type" : "root_node",
+  "playbook" : "05c9e159-afe2-410c-a1f2-a7c16b3c6284",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"dataSetName\" : { \"inputType\" : \"literal\", \"required\" : false, \"sensitive\" : false, \"value\" : \"\\\"service_now_cmdb\\\"\" } }",
+  "children" : ["7eda388f-034b-4e91-9b3a-f6470ea9c712"]
+},
+{
+  "_id" : "7eda388f-034b-4e91-9b3a-f6470ea9c712",
+  "name" : "Get Service Now Data",
+  "shortname" : "get_service_now_data",
+  "type" : "action_node",
+  "playbook" : "05c9e159-afe2-410c-a1f2-a7c16b3c6284",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"aggregation_pipeline\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"query\" : { \"type\" : \"object\", \"description\" : \"A dictionary containing the filter to be used in the \\\"find()\\\" method.\" } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"asset_id\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset ID of the MongoDB server where the database and collection are located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarw\\\"\" }, \"database_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the database where the collection is located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"sonargd\\\"\" }, \"collection_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the collection where to perform the query or the aggregation.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"servicenow_cmdb_table_data\\\"\" }, \"aggregation_pipeline\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"[ { \\\"$project\\\" : { \\\"_id\\\" : 0, \\\"sys_id\\\" : 1, \\\"support_group\\\" : \\\"$support_group.display_value\\\", \\\"managed_by\\\" : \\\"$managed_by.display_value\\\", \\\"hostname\\\" : \\\"$fqdn\\\", \\\"supported_by\\\" : \\\"$supported_by.display_value\\\", \\\"name\\\" : 1, \\\"managed_by_group\\\" : \\\"$managed_by_group.display_value\\\", \\\"ip_address\\\" : 1, \\\"subcategory\\\" : 1, \\\"department\\\" : \\\"$department.display_value\\\", \\\"category\\\" : 1 } } ]\" } }",
+  "result" : "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"batch_size\" : { \"type\" : \"string\", \"description\" : \"The number of documents returned.\" }, \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the execution was successful.\" }, \"results\" : { \"type\" : \"string\", \"description\" : \"A list containing the documents found.\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
+  "children" : ["b8a05ebb-b04f-429e-946a-ae9eb05291a5"],
+  "action" : "actions:sonaractions.mongodb_actions_execute_mongodb_query",
+  "asynchronous" : false
+},
+{
+  "_id" : "b8a05ebb-b04f-429e-946a-ae9eb05291a5",
+  "name" : "Get MX Connections",
+  "shortname" : "get_mx_connections",
+  "type" : "action_node",
+  "playbook" : "05c9e159-afe2-410c-a1f2-a7c16b3c6284",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"aggregation_pipeline\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"query\" : { \"type\" : \"object\", \"description\" : \"A dictionary containing the filter to be used in the \\\"find()\\\" method.\" } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"asset_id\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset ID of the MongoDB server where the database and collection are located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarw\\\"\" }, \"database_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the database where the collection is located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"lmrm__sonarg\\\"\" }, \"collection_name\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the collection where to perform the query or the aggregation.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"connection\\\"\" }, \"aggregation_pipeline\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"array\", \"description\" : \"A list containing the aggregation stages to be used in the \\\"aggregate()\\\" method.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : false, \"sensitive\" : false, \"value\" : \"[ { \\\"$match\\\" : { \\\"Service Name\\\" : \\\"MX\\\" } },{ \\\"$project\\\" : { \\\"*\\\" : 0, \\\"url\\\" : 1, \\\"asset_id\\\" : 1 } } ]\" } }",
+  "result" : "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"batch_size\" : { \"type\" : \"string\", \"description\" : \"The number of documents returned.\" }, \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the execution was successful.\" }, \"results\" : { \"type\" : \"string\", \"description\" : \"A list containing the documents found.\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
+  "children" : ["b3f2fe35-8402-4850-afae-04dc59c8d4d6"],
+  "action" : "actions:sonaractions.mongodb_actions_execute_mongodb_query",
+  "asynchronous" : false
+},
+{
+  "_id" : "b3f2fe35-8402-4850-afae-04dc59c8d4d6",
+  "name" : "Loop over MX Connections",
+  "shortname" : "loop_over_mx_connections",
+  "type" : "loop_node",
+  "playbook" : "05c9e159-afe2-410c-a1f2-a7c16b3c6284",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"items\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\" }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$get_mx_connections.result.results\\\"\" } }",
+  "children" : ["0daa7285-628a-417c-a284-83655eb5093b"],
+  "end" : ["7342794b-10a4-4941-afd4-0970cfb02fc9"]
+},
+{
+  "_id" : "0daa7285-628a-417c-a284-83655eb5093b",
+  "name" : "Update MX Dataset",
+  "shortname" : "update_mx_dataset",
+  "type" : "action_node",
+  "playbook" : "05c9e159-afe2-410c-a1f2-a7c16b3c6284",
+  "errorStatus" : "warn",
+  "arguments" : "{ \"url\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"{url}/SecureSphere/api - will be overwritten with asset_id connection 'url' field\", \"default\" : \"localhost\", \"extensions\" : { \"in\" : \"server\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"<from_asset>\\\"\" }, \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"records\" : { \"type\" : \"array\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { \"type\" : \"object\" } } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"dataSetName\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$root.arguments.dataSetName\\\"\" }, \"SessionAuth\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset_id of the connection that matches type:OPENAPI and auth_mechanism:SessionAuth\", \"extensions\" : { \"in\" : \"header\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$loop_over_mx_connections.item.asset_id\\\"\" }, \"records\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { \"type\" : \"object\" } }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$get_service_now_data.result.results\\\"\" } }",
+  "children" : ["7342794b-10a4-4941-afd4-0970cfb02fc9"],
+  "action" : "imperva_mx:updateDatasetRecords",
+  "asynchronous" : false
+},
+{
+  "_id" : "7342794b-10a4-4941-afd4-0970cfb02fc9",
+  "name" : "End",
+  "shortname" : "end",
+  "type" : "end_node",
+  "playbook" : "05c9e159-afe2-410c-a1f2-a7c16b3c6284",
+  "errorStatus" : "fail"
+}]

@@ -68,6 +68,11 @@ use lmrm__ae
 db.action_center_sources.insertMany(new_sources)
 ```
 
+### Synchronize api schemas with playbook integrations
+
+  - Navigate to Home->Playbooks->Synchronization History.  
+  - Click `Synchronize Now`, expand the job and look for `imperva_mx` and `servicenow` to ensure the schemas were imported successfully.
+
 ## Usage
 
 ### Adding a connection

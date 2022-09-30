@@ -1,0 +1,141 @@
+[
+{
+  "_id" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "name" : "Create SNOW Incident Record",
+  "description" : "",
+  "type" : "playbook",
+  "category" : "ServiceNow Incident",
+  "source" : {
+    "database" : "lmrm__ae",
+    "collection" : "playbook_definitions",
+    "page" : "playbooks.xhtml"
+  },
+  "version" : 38,
+  "enabled" : true,
+  "onlyWarehouse" : false,
+  "created" : {
+    "$date" : "2022-09-30T05:04:38.373Z"
+  },
+  "playbook" : {
+    "_id" : "18d7a1bb-80d0-490e-bcdc-99c630329a64",
+    "name" : "Create SNOW Incident Record",
+    "description" : "",
+    "type" : "playbook",
+    "category" : "ServiceNow Incident",
+    "source" : {
+      "database" : "lmrm__ae",
+      "collection" : "playbook_definitions",
+      "page" : "playbooks.xhtml"
+    },
+    "version" : 38,
+    "enabled" : true,
+    "onlyWarehouse" : false,
+    "created" : {
+      "$date" : "2022-09-29T22:21:40.321Z"
+    },
+    "playbook" : {
+      "_id" : "8114260f-d68d-4ffb-b5a4-b3e8a001015c",
+      "name" : "Create Incident Record",
+      "description" : "",
+      "type" : "playbook",
+      "category" : "ServiceNow Incident",
+      "source" : {
+        "database" : "lmrm__ae",
+        "collection" : "playbook_definitions",
+        "page" : "playbooks.xhtml"
+      },
+      "version" : 38,
+      "enabled" : true,
+      "onlyWarehouse" : false
+    }
+  }
+},
+{
+  "_id" : "261d5231-8759-4492-aeea-b4bfa65573f8",
+  "name" : "Create Incident Record",
+  "shortname" : "start",
+  "type" : "root_node",
+  "playbook" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"run_type\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\", \"title\" : \"Run Type\", \"default\" : \"direct\" }, \"required\" : false, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"row_run\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"title\" : \"Row Run\", \"default\" : [{ \"$match\" : { \"_id\" : \"$$ejsonData._id\" } }] }, \"required\" : false, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"bulk_run\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"array\", \"title\" : \"Bulk Run\", \"default\" : \"$$lmrm.pipeline\" }, \"required\" : false, \"sensitive\" : false, \"contextVariable\" : true, \"alwaysPrompt\" : false }, \"comment\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\" }, \"required\" : false, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"database_name\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\", \"default\" : \"sonargd\" }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false }, \"collection_name\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"string\", \"default\" : \"instance\" }, \"required\" : true, \"sensitive\" : false, \"contextVariable\" : false, \"alwaysPrompt\" : false } }",
+  "children" : ["1eed668e-7cf4-4cd8-ae09-6ed6e294d107"]
+},
+{
+  "_id" : "1eed668e-7cf4-4cd8-ae09-6ed6e294d107",
+  "name" : "Was the asset ID provided manually?",
+  "shortname" : "is_direct",
+  "type" : "conditional_node",
+  "playbook" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "arguments" : "{ \"expression\" : { \"inputType\" : \"bind\", \"required\" : false, \"sensitive\" : false, \"runAsProject\" : true, \"expression\" : \"{ \\\"$cond\\\" : { \\\"if\\\" : { \\\"$eq\\\" : [\\\"$start.arguments.run_type\\\", \\\"direct\\\"] }, \\\"then\\\" : true, \\\"else\\\" : false } }\" } }",
+  "children" : ["55a8e2c9-4e9b-4520-a630-7444bfcee200", "6b9b22e9-517c-405b-81f5-d5ec8ec59fc8"],
+  "end" : ["060b85ad-bfda-436c-a187-2c5cc20d9b1d"]
+},
+{
+  "_id" : "55a8e2c9-4e9b-4520-a630-7444bfcee200",
+  "name" : "Match events based on Kibana's search result",
+  "shortname" : "sonark_aggregate",
+  "type" : "action_node",
+  "playbook" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"database_name\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the database where the collection is located.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$start.arguments.database_name\\\"\" }, \"requestBody\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"object\", \"description\" : \"The action's parameters contained in the request data.\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"required\" : [\"aggregation_pipeline\"], \"properties\" : { \"aggregation_pipeline\" : { \"type\" : \"array\", \"description\" : \"A list containing the pipeline stages.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } } } }, \"required\" : false, \"expanded\" : true, \"sensitive\" : false }, \"remove_limit\" : { \"inputType\" : \"prompt\", \"schema\" : { \"type\" : \"boolean\", \"title\" : \"Remove Max Documents Limit\", \"description\" : \"If set to \\\"True\\\", removes the document limit that comes by default with SonarK's aggregation pipeline. (Default: True)\", \"default\" : true, \"extensions\" : { \"in\" : \"query\" } }, \"required\" : false, \"sensitive\" : false, \"contextVariable\" : true, \"alwaysPrompt\" : false }, \"collection_name\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The name of the collection where to execute the aggregation.\", \"extensions\" : { \"in\" : \"query\" } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$start.arguments.collection_name\\\"\" }, \"aggregation_pipeline\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"array\", \"description\" : \"A list containing the pipeline stages.\", \"extensions\" : { \"parent\" : \"requestBody\" }, \"items\" : { } }, \"required\" : true, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"$pipeline\\\"\", \"enrichment\" : \"[{ \\\"$project\\\" : { \\\"pipeline\\\" : { \\\"$cond\\\" : { \\\"if\\\" : { \\\"$eq\\\" : [\\\"$start.arguments.run_type\\\", \\\"\\\\\\\"row\\\\\\\"\\\"] }, \\\"then\\\" : \\\"$start.arguments.row_run\\\", \\\"else\\\" : \\\"$start.arguments.bulk_run\\\" } } } }]\" } }",
+  "result" : "{ \"schema\" : { \"type\" : \"object\", \"description\" : \"Action completed\", \"properties\" : { \"batch_size\" : { \"type\" : \"string\", \"description\" : \"The number of documents returned.\" }, \"message\" : { \"type\" : \"string\", \"description\" : \"A message informing the execution was successful.\" }, \"results\" : { \"type\" : \"string\", \"description\" : \"A list containing the documents found.\" } } }, \"sensitive\" : false, \"expression\" : \"\" }",
+  "children" : ["10e25ac0-bb2b-404c-b8d3-f446758e8bbe"],
+  "action" : "actions:sonaractions.sonark_actions_sonark_aggregate",
+  "asynchronous" : false
+},
+{
+  "_id" : "10e25ac0-bb2b-404c-b8d3-f446758e8bbe",
+  "name" : "Loop through matched events",
+  "shortname" : "events_loop",
+  "type" : "loop_node",
+  "playbook" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"items\" : { \"inputType\" : \"bind\", \"required\" : false, \"sensitive\" : false, \"runAsProject\" : true, \"expression\" : \"\\\"$sonark_aggregate.result.results\\\"\" } }",
+  "children" : ["a36bdcf4-4258-4588-ac50-4ab49938f0e2"],
+  "end" : ["060b85ad-bfda-436c-a187-2c5cc20d9b1d"]
+},
+{
+  "_id" : "a36bdcf4-4258-4588-ac50-4ab49938f0e2",
+  "name" : "Massage payload for servicenow",
+  "shortname" : "payload",
+  "type" : "stamp_node",
+  "playbook" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"short_description\" : { \"inputType\" : \"bind\", \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"Server Hostname: $events_loop.item.Server Host Name\\\\r\\\\nDatabase Name: $events_loop.item.Database Name\\\\r\\\\nDB User Name: $events_loop.item.DB User Name\\\"\" }, \"description\" : { \"inputType\" : \"bind\", \"required\" : false, \"sensitive\" : false, \"runAsProject\" : false, \"expression\" : \"\\\"Server Hostname: $events_loop.item.Server Host Name\\\\nDatabase Name: $events_loop.item.Database Name\\\\nDB User Name: $events_loop.item.DB User Name\\\\nComment: $start.arguments.comment\\\"\" } }",
+  "children" : ["dcdc001f-f871-4a39-b056-c2445d4eed2a"],
+  "stamp" : "success",
+  "message" : ""
+},
+{
+  "_id" : "dcdc001f-f871-4a39-b056-c2445d4eed2a",
+  "name" : "Create Record SonarK",
+  "shortname" : "create_record_sonark",
+  "type" : "action_node",
+  "playbook" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"url\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"{url}/api/now - will be overwritten with asset_id connection 'url' field\", \"default\" : \"https://demo.servicenow.com\", \"extensions\" : { \"in\" : \"server\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"<asset_url>\\\"\" }, \"requestBody\" : { \"inputType\" : \"bind\", \"schema\" : { \"type\" : \"object\", \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" } }, \"required\" : false, \"sensitive\" : false, \"runAsProject\" : true, \"expression\" : \"{ \\\"short_description\\\" : \\\"$payload.arguments.short_description\\\", \\\"description\\\" : \\\"$payload.arguments.description\\\", \\\"assignment_group\\\" : \\\"<work_notes>\\\", \\\"work_notes\\\" : \\\"<work_notes>\\\", \\\"cmdb_ci\\\" : \\\"<cmdb_ci>\\\", \\\"urgency\\\" : \\\"<urgency>\\\", \\\"impact\\\" : \\\"<impact>\\\", \\\"priority\\\" : \\\"<priority>\\\" }\" }, \"tableName\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"Name of the table from which to retrieve the records.\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"incident\\\"\" }, \"BasicAuth\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset_id of the connection that matches type:OPENAPI and auth_mechanism:basic\", \"extensions\" : { \"in\" : \"header\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"service_now\\\"\" } }",
+  "children" : ["060b85ad-bfda-436c-a187-2c5cc20d9b1d"],
+  "action" : "servicenow:create_record",
+  "asynchronous" : false
+},
+{
+  "_id" : "060b85ad-bfda-436c-a187-2c5cc20d9b1d",
+  "name" : "End",
+  "shortname" : "end",
+  "type" : "end_node",
+  "playbook" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "errorStatus" : "fail",
+  "result" : "{ \"schema\" : { \"type\" : \"array\", \"items\" : { \"type\" : \"object\", \"additionalProperties\" : { } } }, \"sensitive\" : false, \"expression\" : \"{ \\\"$cond\\\" : { \\\"if\\\" : { \\\"$eq\\\" : [\\\"$start.arguments.run_type\\\", \\\"row\\\"] }, \\\"then\\\" : [{ \\\"Incident Number\\\" : \\\"$create_record_sonark.result.result.number\\\" }], \\\"else\\\" : { \\\"if\\\" : { \\\"$eq\\\" : [\\\"$start.arguments.run_type\\\", \\\"direct\\\"] }, \\\"then\\\" : [{ \\\"Incident Number\\\" : \\\"$create_record_direct.result.result.number\\\" }], \\\"else\\\" : \\\"\\\" } } }\" }"
+},
+{
+  "_id" : "6b9b22e9-517c-405b-81f5-d5ec8ec59fc8",
+  "name" : "Create Record Direct",
+  "shortname" : "create_record",
+  "type" : "action_node",
+  "playbook" : "23fc49be-ca46-489e-bb9b-f64382df9b78",
+  "errorStatus" : "fail",
+  "arguments" : "{ \"url\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"{url}/api/now - will be overwritten with asset_id connection 'url' field\", \"default\" : \"https://demo.servicenow.com\", \"extensions\" : { \"in\" : \"server\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"<asset_url>\\\"\" }, \"requestBody\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"object\", \"default\" : { \"short_description\" : \"<short_description>\", \"description\" : \"$events_loop.item.arn\", \"assignment_group\" : \"<assignment_group>\", \"work_notes\" : \"<work_notes>\", \"cmdb_ci\" : \"<cmdb_ci>\", \"urgency\" : \"<urgency>\", \"impact\" : \"<impact>\", \"priority\" : \"<priority>\" }, \"extensions\" : { \"in\" : \"body\", \"mediaType\" : \"application/json\" }, \"properties\" : { \"short_description\" : { \"type\" : \"string\" } } }, \"required\" : false, \"sensitive\" : false }, \"tableName\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"Name of the table from which to retrieve the records.\", \"extensions\" : { \"in\" : \"path\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"incident\\\"\" }, \"BasicAuth\" : { \"inputType\" : \"literal\", \"schema\" : { \"type\" : \"string\", \"description\" : \"The asset_id of the connection that matches type:OPENAPI and auth_mechanism:basic\", \"extensions\" : { \"in\" : \"header\" } }, \"required\" : true, \"sensitive\" : false, \"value\" : \"\\\"service_now\\\"\" } }",
+  "children" : ["060b85ad-bfda-436c-a187-2c5cc20d9b1d"],
+  "action" : "servicenow:create_record",
+  "asynchronous" : false
+}]

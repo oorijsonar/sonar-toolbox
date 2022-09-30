@@ -75,7 +75,7 @@ db.action_center_sources.insertMany(new_sources)
 
 ## Usage
 
-### Adding a connection
+## Adding a connection
 
   - Navigate to Home->Sync Spreadsheet->Import Assets.  
   - Click `+ Choose`, and select the `templates/ServiceNow_template.xlsx`
@@ -84,22 +84,140 @@ db.action_center_sources.insertMany(new_sources)
   - Click `Run 'Import Assets'`.  When prompted to confirm, click `√ Import`.
   - Repeat this process for the `templates/ImpervaMX_template.xlsx` to import MX asset connections. 
 
-### Importing playbooks for ServiceNow CMDB to MX Data Set integration.
+### Sample steps to import a playbook
+  - Navigate to Home->Playbooks->Playbook Drafts.  
+  - Navigate to `Import Draft`, click `browse` and select your playbook file and click `Import`.  
+
+## Importing playbooks for ServiceNow CMDB to MX Data Set integration.
 
   - In this section, for the ServiceNow CMDB to MX dataset integration, you will need to follow the following process, as the last playbook depends on the first to to be imported and published first.
-  1. Import `1_import_servicenow_cmdb_data.json` using the `Importing a playbook` steps outlined below
+  1. Import `playbooks/ServiceNow_CMDB/1_import_servicenow_cmdb_data.json` using the `Import a playbook` steps outlined above.
   1. Publish the `Import ServiceNow CMDB data` playbook.
   1. Click Options->Run - Advanced to run/test the `Import ServiceNow CMDB data` playbook.
-  1. Import `2_push_cmdb_data_to_mx.json` using the `Importing a playbook` steps outlined below
+  1. Import `playbooks/ServiceNow_CMDB/2_push_cmdb_data_to_mx.json` using the `Import a playbook` steps outlined above.
   1. Publish the `Push CMDB data to MX` playbook.
   1. Click Options->Run - Advanced to run/test the `Push CMDB data to MX` playbook.
-  1. Import `3_cmdb_servicenow_to_mx_integration.json` using the `Importing a playbook` steps outlined below
+  1. Import `playbooks/ServiceNow_CMDB/3_cmdb_servicenow_to_mx_integration.json` using the `Import a playbook` steps outlined above.
   1. Publish the `CMDB ServiceNow to MX integration` playbook.
   1. Click Options->Run - Advanced to run/test the `CMDB ServiceNow to MX integration` playbook.  
 
-#### Importing a playbook
-  - Navigate to Home->Playbooks->Playbook Drafts.  
-  - Navigate to `Import Draft`, click `browse` and select your playbook file and click `Import`.  
+## Importing playbooks for creating ServiceNow incidents:   
+In this section, for creating ServiceNow incidents via playbooks from collection events, you will need to follow the following process.
+  1. Import `playbooks/ServiceNow_Incident/create_snow_incident_record.json` using the `Import a playbook` steps outlined above.   
+  1. Publish the `Create SNOW Incident Record` playbook.
+
+## Create incidents from events the `sonargd-instance` collection
+To create incidents from events in the `sonargd-instance` collection, follow the following steps:
+  1. Navigate to Home->Playbooks->Published Playbooks.
+  1. Select the `All Categories` dropdown, and select the `ServiceNow Incident` category filter.
+  1. On the `Create SNOW Incident Record` playbook, click Options->Create SonarK Button, and enter the following:   
+    - Select an Index Pattern: `sonargd-instance`  
+    - Location: `ROW`  
+    - Button Label: `Create SNOW Incident`  
+    - Group Label: `No`  
+    - Playbook Execution: Check `Synchronous Execution`
+    - Enter the following syntax into the text area:  
+
+      ```
+      {
+        "start" : {
+          "run_type" : "row",
+          "row_run" : "<placeholder>",
+          "database_name" : "sonargd",
+          "collection_name" : "instance"
+        }
+      }
+      ```  
+  1. Navigate to Home->System Management->SonarK Management->Index Patterns.
+  1. Search for `instance`, and select the `sonargd-instance` collection.
+  1. Navigate to Actions->Row, anc click the pen icon to edit the `Create Snow Incident` action button.
+  1. Enter the following json syntax into the args text area, anc click `Save`:  
+      ```
+      {
+          "value": {
+              "start": {
+                  "run_type": "row",
+                  "row_run": [
+                      {
+                          "$match": {
+                              "_id": "$$ejsonData._id"
+                          }
+                      }
+                  ],
+                  "database_name": "sonargd",
+                  "collection_name": "instance"
+              }
+          },
+          "synchronous": true
+      }
+      ```
+
+
+## Create incidents from events the `sonargd-session` collection  
+To create incidents from events in the `sonargd-session` collection, follow the following steps:
+  1. Navigate to Home->Playbooks->Published Playbooks.
+  1. Select the `All Categories` dropdown, and select the `ServiceNow Incident` category filter.
+  1. Navigate to Home->System Management->SonarK Management->Index Patterns.
+  1. On the `Create SNOW Incident Record` playbook, click Options->Create SonarK Button, and enter the following:   
+    - Select an Index Pattern: `sonargd-session`  
+    - Location: `ROW`  
+    - Button Label: `Create SNOW Incident`  
+    - Group Label: `No`  
+    - Playbook Execution: Check `Synchronous Execution`
+    - Enter the following syntax into the text area:  
+
+      ```
+      {
+        "start" : {
+          "run_type" : "row",
+          "row_run" : "<placeholder>",
+          "database_name" : "sonargd",
+          "collection_name" : "instance"
+        }
+      }
+      ```  
+  1. Navigate to Home->System Management->SonarK Management->Index Patterns.
+  1. Search for `session`, and select the `sonargd-session` collection.
+  1. Navigate to Scripted Fields, and click `Add scripted field` and add the following and click Save:
+    - Name: `id_string`  
+    - Language: `sonar`    
+    - Type: `string`  
+    - Format: `string`  
+    - Popularity: LEAVE BLANK  
+    - Script:  
+      ```
+      { "$toString" : "$_id" }
+      ```
+  1. Navigate to Actions->Row, anc click the pen icon to edit the `Create Snow Incident` action button.
+  1. Enter the following json syntax into the args text area, anc click `Save`:  
+      ```
+      {
+          "value": {
+              "start": {
+                  "run_type": "row",
+                  "row_run": [
+                      {
+                          "$match": {
+                              "$expr": {
+                                  "$eq": [
+                                      {
+                                          "$toString": "$_id"
+                                      },
+                                      "$$data.id_string"
+                                  ]
+                              }
+                          }
+                      }
+                  ],
+                  "database_name": "sonargd",
+                  "collection_name": "session"
+              }
+          },
+          "synchronous": true
+      }
+      ```
+  1. Navigate to Home->Discover, select the sonargd-instance collection, and click `Create SNOW Incident`.  Enter a comment and click submit.
+  1. Navigate to Home->Discover, select the sonargd-session collection, and click `Create SNOW Incident`.  Enter a comment and click submit.
 
 ## Contributing
 

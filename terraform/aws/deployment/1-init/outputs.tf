@@ -11,3 +11,4 @@ output "dsf_passwords_secret_name" { value = "${var.environment}/dsf_passwords" 
 output "rds_passwords_secret_name" { value = "${var.environment}/dsf_passwords" }
 output "dsf_passwords" { value = resource.aws_secretsmanager_secret_version.dsf_passwords.id }
 output "dsf_iam_profile_name" { value = "${var.environment}_dsf_instance_iam_profile" }
+output "dsf_iam_role_name" { value = "${var.environment}_imperva_dsf_role" }

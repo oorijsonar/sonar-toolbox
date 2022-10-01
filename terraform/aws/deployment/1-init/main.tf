@@ -133,53 +133,51 @@ resource "aws_iam_role" "dsf_role" {
   inline_policy {
     name = "imperva_dsf_access"
     policy = jsonencode({
-        "Version": "2012-10-17",
-        "Statement": [
-          {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": "secretsmanager:GetSecretValue",
-            "Resource": [
-              "${aws_secretsmanager_secret.dsf_hub_federation_public_key.arn}",
-              "${aws_secretsmanager_secret.dsf_hub_federation_private_key.arn}",
-              "${aws_secretsmanager_secret.dsf_gateway_federation_public_key.arn}",
-              "${aws_secretsmanager_secret.dsf_gateway_federation_private_key.arn}"
-            ]
-          },
-          {
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket",
-                "s3:ListAllMyBuckets"
-            ],
-            "Resource": "arn:aws:s3:::*"
-          },
-          {
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket",
-                "s3:GetObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::${var.s3_bucket}",
-                "arn:aws:s3:::${var.s3_bucket}/*"
-            ],
-            "Condition": {}
-          },
-          {
-            "Sid": "EnableCreationAndManagementOfRDSCloudwatchLogEvents",
-            "Effect": "Allow",
-            "Action": [
-                "logs:GetLogEvents",
-                "logs:DescribeLogGroups",
-                "logs:DescribeLogStreams",
-                "logs:FilterLogEvents"
-            ],
-            "Resource": "arn:aws:logs:*:*:log-group:/aws/rds/*:log-stream:*"
-          }
-        ]
-      }
-    )
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "VisualEditor0",
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListAllMyBuckets",
+            "redshift:DescribeClusters",
+            "s3:ListBucket"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Sid": "VisualEditor1",
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "sts:AssumeRole",
+            "secretsmanager:GetSecretValue",
+            "logs:DescribeLogGroups",
+            "logs:DescribeLogStreams",
+            "logs:GetLogEvents",
+            "s3:ListBucket",
+            "logs:FilterLogEvents",
+            "rds:DescribeDBClusters",
+            "rds:DescribeOptionGroups",
+            "rds:DescribeDBInstances",
+          ],
+          "Resource": [
+            "${aws_secretsmanager_secret.dsf_hub_federation_public_key.arn}",
+            "${aws_secretsmanager_secret.dsf_hub_federation_private_key.arn}",
+            "${aws_secretsmanager_secret.dsf_gateway_federation_public_key.arn}",
+            "${aws_secretsmanager_secret.dsf_gateway_federation_private_key.arn}",
+            "arn:aws:logs:us-east-2:658749227924:log-group:*:log-stream:*",
+            "arn:aws:logs:*:*:log-group:/aws/rds/*:log-stream:*",
+            "arn:aws:s3:::${var.s3_bucket}",
+            "arn:aws:s3:::${var.s3_bucket}/*",
+            "arn:aws:rds:*:658749227924:db:*",
+            "arn:aws:rds:*:658749227924:og:*",
+            "arn:aws:rds:*:658749227924:cluster:*",
+            "arn:aws:iam::658749227924:role/${var.environment}_imperva_dsf_role"
+          ]
+        }
+      ]
+    })
   }
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -187,7 +185,7 @@ resource "aws_iam_role" "dsf_role" {
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
-        Sid    = ""
+        Sid    = "AllowAssumeRole",
         Principal = {
           Service = "ec2.amazonaws.com"
         }

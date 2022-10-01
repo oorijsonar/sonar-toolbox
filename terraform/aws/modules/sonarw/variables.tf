@@ -79,7 +79,7 @@ variable "dsf_gateway_public_authorized_keys" {
   description = "Array of DSF Gateway public authorized key names"
 }
 
-variable dsf_iam_profile_name {
+variable dsf_iam_role_name {
   type = string
   default = null
   description = "DSF base ec2 IAM instance profile name"

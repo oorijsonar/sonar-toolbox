@@ -46,14 +46,7 @@ STATE_DIR=/opt/jsonar
     --jsonar-localdir=$STATE_DIR/local \
     --jsonar-logdir=$STATE_DIR/logs ${additional_parameters}
 
-cat << EOF > /etc/profile.d/jsonar.sh
-source /etc/sysconfig/jsonar
-export JSONAR_BASEDIR
-export JSONAR_DATADIR
-export JSONAR_LOGDIR
-export JSONAR_LOCALDIR
-export JSONAR_VERSION
-EOF
+export $(cat /etc/sysconfig/jsonar)
 
 mkdir -p /home/sonarw/.ssh
 /usr/local/bin/aws secretsmanager get-secret-value --secret-id ${dsf_gateway_private_key_name} --query SecretString --output text > /root/.ssh/id_rsa

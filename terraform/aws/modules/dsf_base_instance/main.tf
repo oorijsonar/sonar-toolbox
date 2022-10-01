@@ -19,7 +19,8 @@ data "aws_ami" "rhel79_ami_id" {
     owners = ["aws-marketplace"]
     filter {
         name = "name"
-        values = ["ca036d10-2e28-4b60-ba48-61e66b8e29a8.0f79e08e-623c-448a-aaf8-01980c58858a.DC0001"]
+        values = ["Bansir Red Hat Enterprise Linux (RHEL) 6 (HVM)-e6059826-17e3-4a16-90e7-bd1cf0815271"]
+        # values = ["ca036d10-2e28-4b60-ba48-61e66b8e29a8.0f79e08e-623c-448a-aaf8-01980c58858a.DC0001"]
     }
 }
 
@@ -67,7 +68,6 @@ resource "aws_ebs_volume" "ebs_vol" {
 data "aws_subnet" "subnet" {
   id = var.subnet_id
 }
-
 
 resource "aws_security_group" "public" {
   description = "Public internet access"

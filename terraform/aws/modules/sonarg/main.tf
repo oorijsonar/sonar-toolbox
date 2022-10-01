@@ -36,4 +36,3 @@ module "gw_instance" {
   security_group_ingress_cidrs = var.security_group_ingress_cidrs
   dsf_iam_profile_name         = var.dsf_iam_profile_name
 }
-

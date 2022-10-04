@@ -30,3 +30,7 @@ variable "s3_bucket" {
   description = "Name of the S3 bucket where the install tar is hosted"
 }
 
+variable "default_password" {
+  default = "YourDefaultPasswordHere" 
+  description = "Default password to use in dev, labs and demos"
+} 

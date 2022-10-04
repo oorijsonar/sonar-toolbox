@@ -48,10 +48,10 @@ locals {
   #   sonargd_pasword = random_password.sonargd_pasword.result
   # }
   dsf_passwords_obj  = {
-    admin_password = "Imperva123#"
-    secadmin_password = "Imperva123#"
-    sonarg_pasword = "Imperva123#"
-    sonargd_pasword = "Imperva123#"
+    admin_password = var.default_password
+    secadmin_password = var.default_password
+    sonarg_pasword = var.default_password
+    sonargd_pasword = var.default_password
   }
 }
 

@@ -48,23 +48,18 @@ data "terraform_remote_state" "dsf" {
 #   secret_string = jsonencode(local.rds_passwords_obj)
 # }
 
-module "rds-aurora-mysql" {
+module "rds-mysql-db" {
 	source  = "../../modules/rds-mysql-db"
 	region = data.terraform_remote_state.init.outputs.region
 	# username = local.rds_passwords_obj.username
 	# password = local.rds_passwords_obj.pasword	
-	username = "your_db_username_here"
-	password = "your_db_password_here"
+	username = var.username
+	password = var.password
 	rds_subnet_ids = var.rds_subnet_ids	
 	# key_pair_pem_local_path = var.key_pair_pem_local_path
 	key_pair_pem_local_path = data.terraform_remote_state.init.outputs.key_pair_pem_local_path
-	hub_ip = data.terraform_remote_state.dsf.outputs.hub_ip
-	hub_uuid = data.terraform_remote_state.dsf.outputs.hub_uuid
-	hub_display_name = data.terraform_remote_state.dsf.outputs.hub_display_name
-	gw1_uuid = data.terraform_remote_state.dsf.outputs.gw1_uuid
-	gw1_display_name = data.terraform_remote_state.dsf.outputs.gw1_display_name
 	db_identifier = var.db_identifier
 	db_name = "isbt_db"
 	init_sql_file_path = "init/init_db.sql"
-	security_group_ingress_cidrs = data.terraform_remote_state.init.outputs.security_group_ingress_cidrs
+	security_group_ingress_cidrs = data.terraform_remote_state.dsf.outputs.security_group_ingress_cidrs
 }

@@ -12,6 +12,11 @@ variable "ec2_instance_type" {
   description = "Ec2 instance type for the DSF base instance"
 }
 
+variable "aws_ami_name" {
+  type = string
+  description = "Name of the base AMI to use when deploying the dsf instnace."
+}
+
 variable "ebs_disk_size" {
   validation {
     condition     = var.ebs_disk_size >= 100
@@ -33,12 +38,12 @@ variable "key_pair_pem_local_path" {
   description = "Path to local key pair used to access dsf instances via ssh to run remote commands"
 }
 
-variable security_group_ingress_cidrs {
+variable "security_group_ingress_cidrs" {
   type = list
   description = "List of allowed ingress cidr patterns for the DSF base instance"
 }
 
-variable dsf_iam_profile_name {
+variable "dsf_iam_profile_name" {
   type = string
   default = null
   description = "DSF base ec2 IAM instance profile"

@@ -34,7 +34,7 @@ locals {
           "Server Host Name": "unused_placeholder_value",
           "admin_email": "admin@imperva.com",
           "Server Port": "443",
-          "location": "${var.db_identifier}-${var.region}",
+          "location": "${data.aws_iam_role.iam_role.name}-${var.region}",
           "region": var.region,
           "owned_by": "admin@imperva.com",
           "managed_by": "admin@imperva.com",

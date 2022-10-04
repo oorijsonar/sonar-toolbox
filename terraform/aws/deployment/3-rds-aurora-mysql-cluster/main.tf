@@ -59,9 +59,4 @@ module "rds-aurora-mysql" {
 	rds_subnet_ids = var.rds_subnet_ids	
 	# key_pair_pem_local_path = var.key_pair_pem_local_path
 	key_pair_pem_local_path = data.terraform_remote_state.init.outputs.key_pair_pem_local_path
-	hub_ip = data.terraform_remote_state.dsf.outputs.hub_ip
-	hub_uuid = data.terraform_remote_state.dsf.outputs.hub_uuid
-	hub_display_name = data.terraform_remote_state.dsf.outputs.hub_display_name
-	gw1_uuid = data.terraform_remote_state.dsf.outputs.gw1_uuid
-	gw1_display_name = data.terraform_remote_state.dsf.outputs.gw1_display_name
 }

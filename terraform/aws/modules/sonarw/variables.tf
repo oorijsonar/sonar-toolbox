@@ -37,8 +37,12 @@ variable "s3_bucket" {
 
 variable "ec2_instance_type" {
   type = string
-  default = "t2.2xlarge"
   description = "Ec2 instance type for the DSF hub"
+}
+
+variable "aws_ami_name" {
+  type = string
+  description = "Name of the base AMI to use when deploying the dsf instnace."
 }
 
 variable "ebs_disk_size" {
@@ -59,7 +63,7 @@ variable "dsf_install_tarball_path" {
   description = "installation tarball path"
 }
 
-variable security_group_ingress_cidrs {
+variable "security_group_ingress_cidrs" {
   type = list
   description = "List of allowed ingress cidr patterns for the DSF hub instance"
 }
@@ -79,7 +83,7 @@ variable "dsf_gateway_public_authorized_keys" {
   description = "Array of DSF Gateway public authorized key names"
 }
 
-variable dsf_iam_role_name {
+variable "dsf_iam_profile_name" {
   type = string
   default = null
   description = "DSF base ec2 IAM instance profile name"

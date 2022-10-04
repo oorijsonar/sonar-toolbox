@@ -26,6 +26,7 @@ module "sonarw" {
 	key_pair_pem_local_path = data.terraform_remote_state.init.outputs.key_pair_pem_local_path
 	s3_bucket = data.terraform_remote_state.init.outputs.s3_bucket
 	ec2_instance_type = var.ec2_instance_type
+	aws_ami_name = var.aws_ami_name
 	ebs_disk_size = 500
 	dsf_version = var.dsf_version
 	dsf_install_tarball_path = var.dsf_install_tarball_path
@@ -55,6 +56,7 @@ module "sonarg1" {
 	key_pair_pem_local_path = data.terraform_remote_state.init.outputs.key_pair_pem_local_path
 	s3_bucket = data.terraform_remote_state.init.outputs.s3_bucket
 	ec2_instance_type = var.ec2_instance_type
+	aws_ami_name = var.aws_ami_name
 	ebs_disk_size = 150
 	dsf_version = var.dsf_version
 	dsf_install_tarball_path = var.dsf_install_tarball_path

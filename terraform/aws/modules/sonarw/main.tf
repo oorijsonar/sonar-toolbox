@@ -35,6 +35,7 @@ module "hub_instance" {
   key_pair                       = var.key_pair
   key_pair_pem_local_path        = var.key_pair_pem_local_path
   ec2_instance_type              = var.ec2_instance_type
+  aws_ami_name                   = var.aws_ami_name
   ebs_disk_size                  = var.ebs_disk_size
   security_group_ingress_cidrs   = var.security_group_ingress_cidrs
   dsf_iam_profile_name           = var.dsf_iam_profile_name

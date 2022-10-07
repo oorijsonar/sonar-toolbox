@@ -16,15 +16,15 @@ SONARW_IMPORT='${JSONAR_BASEDIR}/bin/mongoimport --quiet --port 27117 --authenti
 # $1=db, $2=command, $3=ssh
 function sonarw_run() {
   if [[ $3 ]] ; then
-    $3 "$LOAD_VARS; $LOAD_CERT; $SONARW '$1' --eval '$2'"
+    $3 "$LOAD_VARS; $LOAD_CERT; $SONARW \"'$1'\" --eval \"'$2'\""
   else
-    eval $LOAD_VARS && eval $LOAD_CERT && eval $SONARW '$1' --eval '$2'
+    eval $LOAD_VARS && eval $LOAD_CERT && eval $SONARW "'$1'" --eval "'$2'"
   fi
 }
 
 ## start env report
 
-echo -e "\nStarting environment report"
+echo -e "\nStarting environment stats report"
 
 # export jsonar variables
 
@@ -55,7 +55,7 @@ add_to_report "federation_report" "\n==========\n"
 
 ## start sizing operations
 
-echo -e "\nStarting environment sizing operations"
+echo -e "\nStarting environment sizing stats operations"
 
 # check ssh connection
 
@@ -73,7 +73,7 @@ add_to_report "federation_report" "\n==========\n"
 
 # $1=host, $2=ssh
 function machine_info() {
-  add_to_report "machine_info_report" "$1"
+  add_to_report "machine_info_report" "$1:"
   meminfo=$($2 \cat /proc/meminfo | \grep MemTotal | \awk '{print $1, $2/1000000, "GB"}')
   lscpu=$($2 \lscpu | \grep '^CPU(s):')
   add_to_report "machine_info_report" "  - meminfo: $(echo $meminfo)"
@@ -95,21 +95,25 @@ add_to_report "machine_info_report" "\n==========\n"
 
 echo -e "\nStarting sonarw data retrieval operations"
 
-echo "1 - retrieving asset info remote hosts ..."
-
 count_assets='{"$match":{"$and":[{"asset_id":{"$ne":"lmrm__sonarw"}},{"asset_id":{"$ne":"mailer"}}]}},{"$group":{"_id":"$Server Type","count":{"$sum":1}}}'
 
+echo "1 - retrieving asset info from warehouse ..."
+
+asset_info=$(sonarw_run "lmrm__sonarg" "db.asset.aggregate($count_assets)")
+asset_info_clean=$(echo "$asset_info" | awk -F "\"" '{print $4 = sprintf("%-24s", $4), substr($7, 2, length($7)-2)}')
+add_to_report "asset_info_report" "warehouse:\n"
+add_to_report "asset_info_report" "$asset_info_clean"
+add_to_report "asset_info_report" "\n==========\n"
+
+echo "2 - retrieving asset info from remote hosts ..."
+
 for remote_host in $remote_hosts ; do
-  asset_info=$(sonarw_run "lmrm__sonarg" "db.asset.aggregate($count_assets)" "coll_asset_stats/$remote_host" "ssh -q $remote_host")
-  asset_info_clean=$(awk -F "\"" '{print $4 = sprintf("%-24s", $4), substr($7, 2, length($7)-2)}' $asset_info)
-  add_to_report "asset_info_report" $asset_info_clean
+  asset_info=$(sonarw_run "lmrm__sonarg" "db.asset.aggregate($count_assets)" "ssh -q $remote_host")
+  asset_info_clean=$(echo "$asset_info" | awk -F "\"" '{print $4 = sprintf("%-24s", $4), substr($7, 2, length($7)-2)}')
+  add_to_report "asset_info_report" "$remote_host:\n"
+  add_to_report "asset_info_report" "$asset_info_clean"
+  add_to_report "asset_info_report" "\n==========\n"
 done
-
-echo "2 - retrieving asset info from warehouse ..."
-
-asset_info=$(sonarw_run "lmrm__sonarg" "db.asset.aggregate($count_assets)" "coll_asset_stats/$remote_host")
-asset_info_clean=$(awk -F "\"" '{print $4 = sprintf("%-24s", $4), substr($7, 2, length($7)-2)}' $asset_info)
-add_to_report "asset_info_report" $asset_info_clean
 
 echo "3 - calculating sonargd collections average daily (past 7 days) from warehouse ..."
 
@@ -120,20 +124,23 @@ sonargd[instance]='Period Start'
 sonargd[full_sql]='Timestamp'
 
 function average_daily(){
-  echo '{"$match":{"$and":[{"$expr":{"$gte":["$'$1'",{"$subtract":[{"$now":1},6048000000]}]}}]}},{"$group":{"_id":"all","count":{"$sum":1}}}}'
+  echo -e '{"$match":{"$and":[{"$expr":{"$gte":["$'$1'",{"$subtract":[{"$now":1},6048000000]}]}}]}},{"$group":{"_id":"all","count":{"$sum":1}}}'
 }
 
 for collection in "${!sonargd[@]}"; do
-  agg=$(average_daily ${!sonargd[$collection]})
-  coll_avg=$(sonarw_run "sonargd" "db.$collection.aggregate($agg)" "coll_asset_stats/$remote_host")
-  add_to_report "sonargd_collections_report" "$collection: $coll_avg_clean"
+  echo "  - $collection: ${sonargd[$collection]}"
+  agg=$(average_daily "${sonargd[$collection]}")
+  coll_avg=$(sonarw_run "sonargd" "db.$collection.aggregate($agg)")
+  add_to_report "sonargd_collections_report" "$collection\n"
+  add_to_report "sonargd_collections_report" "$coll_avg_clean"
+  add_to_report "sonargd_collections_report" "\n==========\n"
 done
 
 echo "4 - retriving active UEBA models information from warehouse ..."
 
 ueba_models='{"$match":{"$and":[{"name":{"$regex":"^__ae_UEBA"}},{"paused":false}]}},{"$project":{"engine":{"$arrayElemAt":[{"$split":["$name", " - "]},1]},"_id":0}}'
-ueba_res=$(sonarw_run "lmrm__scheduler" "db.lmrm__scheduled_jobs.aggregate($ueba_models)" "coll_asset_stats/$remote_host")
-add_to_report "ueba_models_report" $ueba_res
+ueba_res=$(sonarw_run "lmrm__scheduler" "db.lmrm__scheduled_jobs.aggregate($ueba_models)")
+add_to_report "ueba_models_report" "$ueba_res"
 
 # finished
 
